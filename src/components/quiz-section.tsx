@@ -1,12 +1,20 @@
 "use client"
 
-import { useMemo, useState } from "react"
-import { CheckCircle2, ChevronLeft, ChevronRight, RotateCcw, XCircle } from "lucide-react"
+import { useEffect, useMemo, useState } from "react"
+import { CheckCircle2, ChevronLeft, ChevronRight, Grid3X3, RotateCcw, XCircle } from "lucide-react"
 
 import questionsData from "@/data/questions.json"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import { Progress } from "@/components/ui/progress"
 import { cn } from "@/lib/utils"
 
@@ -32,6 +40,9 @@ const quiz: Required<QuizDataset> = {
   total_questions: quizSource.questions.length,
 }
 const QUESTIONS_PER_QUIZ = 10
+const PROGRESS_STORAGE_KEY = "linux-qcm-question-progress-v1"
+
+type QuestionStatus = "wrong" | "correct"
 
 const LETTERS = ["A", "B", "C", "D"]
 
@@ -70,8 +81,34 @@ export function QuizSection() {
 
   const [started, setStarted] = useState(false)
   const [finished, setFinished] = useState(false)
+  const [isTrackerOpen, setIsTrackerOpen] = useState(false)
+  const [isQuestionPopupOpen, setIsQuestionPopupOpen] = useState(false)
+  const [selectedQuestionId, setSelectedQuestionId] = useState<number | null>(null)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [answers, setAnswers] = useState<number[]>(() => Array(sessionQuestions.length).fill(-1))
+  const [questionStatusMap, setQuestionStatusMap] = useState<Record<number, QuestionStatus>>(() => {
+    if (typeof window === "undefined") {
+      return {}
+    }
+
+    try {
+      const raw = window.localStorage.getItem(PROGRESS_STORAGE_KEY)
+      if (!raw) return {}
+
+      const parsed = JSON.parse(raw) as Record<string, QuestionStatus>
+      return Object.entries(parsed).reduce<Record<number, QuestionStatus>>(
+        (accumulator, [questionId, status]) => {
+          if (status === "wrong" || status === "correct") {
+            accumulator[Number(questionId)] = status
+          }
+          return accumulator
+        },
+        {}
+      )
+    } catch {
+      return {}
+    }
+  })
 
   const currentQuestion = questions[currentIndex]
   const selectedAnswer = answers[currentIndex]
@@ -94,12 +131,30 @@ export function QuizSection() {
   const wrongCount = answeredCount - score
   const progressValue = ((currentIndex + (hasAnsweredCurrent ? 1 : 0)) / total) * 100
 
+  useEffect(() => {
+    window.localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(questionStatusMap))
+  }, [questionStatusMap])
+
   const selectAnswer = (optionIndex: number) => {
     if (hasAnsweredCurrent) return
 
     const nextAnswers = [...answers]
     nextAnswers[currentIndex] = optionIndex
     setAnswers(nextAnswers)
+
+    const isCorrect = optionIndex === currentCorrectIndex
+    setQuestionStatusMap((previous) => {
+      const currentStatus = previous[currentQuestion.id]
+
+      if (currentStatus === "correct") {
+        return previous
+      }
+
+      return {
+        ...previous,
+        [currentQuestion.id]: isCorrect ? "correct" : "wrong",
+      }
+    })
   }
 
   const nextQuestion = () => {
@@ -127,6 +182,18 @@ export function QuizSection() {
   const restartQuiz = () => {
     startQuiz()
   }
+
+  const completedGlobalCount = Object.keys(questionStatusMap).length
+  const correctGlobalCount = Object.values(questionStatusMap).filter(
+    (status) => status === "correct"
+  ).length
+  const wrongGlobalCount = completedGlobalCount - correctGlobalCount
+  const selectedQuestion = selectedQuestionId
+    ? quiz.questions.find((question) => question.id === selectedQuestionId) ?? null
+    : null
+  const selectedQuestionStatus = selectedQuestion
+    ? questionStatusMap[selectedQuestion.id]
+    : undefined
 
   if (!started) {
     return (
@@ -200,6 +267,131 @@ export function QuizSection() {
                   <RotateCcw className="size-3.5" />
                   Reset QCM
                 </Button>
+
+                <Dialog open={isTrackerOpen} onOpenChange={setIsTrackerOpen}>
+                  <DialogTrigger asChild>
+                    <Button variant="ghost" size="sm" className="h-7 gap-1 px-2">
+                      <Grid3X3 className="size-3.5" />
+                      Suivi
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-3xl">
+                    <DialogHeader>
+                      <DialogTitle>Suivi des questions</DialogTitle>
+                      <DialogDescription>
+                        Gris = non faite, rouge = réponse fausse, vert = réponse juste.
+                      </DialogDescription>
+                    </DialogHeader>
+
+                    <div className="grid grid-cols-3 gap-2 text-xs sm:grid-cols-6">
+                      <div className="rounded-md border bg-muted/40 p-2">
+                        <p className="text-muted-foreground">Faites</p>
+                        <p className="text-sm font-semibold">{completedGlobalCount}/{questionBankTotal}</p>
+                      </div>
+                      <div className="rounded-md border border-green-500/40 bg-green-500/10 p-2">
+                        <p className="text-muted-foreground">Justes</p>
+                        <p className="text-sm font-semibold text-green-700 dark:text-green-400">{correctGlobalCount}</p>
+                      </div>
+                      <div className="rounded-md border border-red-500/40 bg-red-500/10 p-2">
+                        <p className="text-muted-foreground">Fausses</p>
+                        <p className="text-sm font-semibold text-red-700 dark:text-red-400">{wrongGlobalCount}</p>
+                      </div>
+                    </div>
+
+                    <div className="max-h-[50vh] overflow-y-auto rounded-lg border p-3">
+                      <div className="grid grid-cols-5 gap-2 sm:grid-cols-8 md:grid-cols-10">
+                        {quiz.questions.map((question) => {
+                          const status = questionStatusMap[question.id]
+
+                          return (
+                            <button
+                              key={question.id}
+                              title={`Q${question.id} - ${question.theme}`}
+                              onClick={() => {
+                                setSelectedQuestionId(question.id)
+                                setIsQuestionPopupOpen(true)
+                              }}
+                              className={cn(
+                                "flex aspect-square items-center justify-center rounded-md border text-xs font-semibold transition-opacity hover:opacity-85",
+                                !status && "border-border bg-muted/40 text-muted-foreground",
+                                status === "wrong" && "border-red-500/50 bg-red-500/20 text-red-700 dark:text-red-300",
+                                status === "correct" && "border-green-500/50 bg-green-500/20 text-green-700 dark:text-green-300"
+                              )}
+                            >
+                              {question.id}
+                            </button>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+
+                <Dialog
+                  open={isQuestionPopupOpen}
+                  onOpenChange={(open) => {
+                    setIsQuestionPopupOpen(open)
+                    if (!open) {
+                      setSelectedQuestionId(null)
+                    }
+                  }}
+                >
+                  <DialogContent className="sm:max-w-2xl">
+                    {selectedQuestion && (
+                      <>
+                        <DialogHeader>
+                          <DialogTitle>Question {selectedQuestion.id}</DialogTitle>
+                          <DialogDescription>{selectedQuestion.theme}</DialogDescription>
+                        </DialogHeader>
+
+                        <div className="space-y-3">
+                          <p className="text-base font-semibold sm:text-lg">{selectedQuestion.question}</p>
+
+                          <div
+                            className={cn(
+                              "rounded-lg border p-3",
+                              !selectedQuestionStatus && "border-border bg-muted/30",
+                              selectedQuestionStatus === "wrong" &&
+                                "border-red-500/40 bg-red-500/10",
+                              selectedQuestionStatus === "correct" &&
+                                "border-green-500/40 bg-green-500/10"
+                            )}
+                          >
+                            <p className="text-sm text-muted-foreground">Ton statut</p>
+                            <p
+                              className={cn(
+                                "font-medium",
+                                !selectedQuestionStatus && "text-muted-foreground",
+                                selectedQuestionStatus === "wrong" &&
+                                  "text-red-700 dark:text-red-300",
+                                selectedQuestionStatus === "correct" &&
+                                  "text-green-700 dark:text-green-300"
+                              )}
+                            >
+                              {!selectedQuestionStatus
+                                ? "Non faite"
+                                : selectedQuestionStatus === "correct"
+                                  ? "Juste"
+                                  : "Fausse"}
+                            </p>
+                          </div>
+
+                          <div className="rounded-lg border border-green-500/40 bg-green-500/10 p-3">
+                            <p className="text-sm text-muted-foreground">Bonne réponse</p>
+                            <p className="font-medium text-green-700 dark:text-green-300">
+                              <InlineValue value={selectedQuestion.answer} />
+                            </p>
+                          </div>
+
+                          <div className="rounded-lg border bg-muted/30 p-3">
+                            <p className="text-sm text-muted-foreground">Explication</p>
+                            <p className="mt-1 text-sm leading-relaxed">{selectedQuestion.explanation}</p>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </DialogContent>
+                </Dialog>
               </div>
               <CardTitle className="text-xl sm:text-2xl">Question {currentIndex + 1} / {total}</CardTitle>
             </div>
