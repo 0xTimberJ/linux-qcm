@@ -1800,6 +1800,546 @@
         "ram-reset": "Cette commande n'existe pas sous Linux.",
         "kill -9 1": "Dangereux ! Cela tenterait de tuer le processus PID 1 (init/systemd), ce qui pourrait planter le système."
       }
+    },
+    {
+      "id": 101,
+      "theme": "Culture Linux",
+      "question": "Qui est le créateur du noyau Linux ?",
+      "options": [
+        "Richard Stallman",
+        "Linus Torvalds",
+        "Dennis Ritchie",
+        "Ken Thompson"
+      ],
+      "answer": "Linus Torvalds",
+      "explanation": "Linus Torvalds, étudiant finlandais à l'université d'Helsinki, a créé le noyau Linux en 1991.",
+      "wrong_answers": {
+        "Richard Stallman": "Piège classique : Stallman est le père du projet GNU et de la FSF, pas du noyau Linux.",
+        "Dennis Ritchie": "Dennis Ritchie est le co-créateur du langage C et du système Unix aux laboratoires Bell.",
+        "Ken Thompson": "Ken Thompson est le co-créateur d'Unix avec Dennis Ritchie, pas de Linux."
+      }
+    },
+    {
+      "id": 102,
+      "theme": "Culture Linux",
+      "question": "Quels sont les 4 points clés d'un logiciel libre selon la FSF ?",
+      "options": [
+        "Gratuit, open-source, modifiable, redistribuable",
+        "Utilisation ouverte, copie sans restriction, accès au code source, droit de modification et redistribution",
+        "Gratuit, sécurisé, portable, documenté",
+        "Open-source, communautaire, gratuit, léger"
+      ],
+      "answer": "Utilisation ouverte, copie sans restriction, accès au code source, droit de modification et redistribution",
+      "explanation": "Les 4 libertés fondamentales définies par la FSF sont : utilisation, copie, accès au source, et modification/redistribution.",
+      "wrong_answers": {
+        "Gratuit, open-source, modifiable, redistribuable": "Piège : 'libre' ne signifie pas 'gratuit'. Un logiciel libre peut être payant.",
+        "Gratuit, sécurisé, portable, documenté": "La sécurité et la portabilité ne font pas partie de la définition du logiciel libre.",
+        "Open-source, communautaire, gratuit, léger": "Piège : 'open-source' et 'libre' sont des concepts proches mais distincts. La FSF parle de libertés."
+      }
+    },
+    {
+      "id": 103,
+      "theme": "Culture Linux",
+      "question": "Quelle est la différence entre GNU et Linux ?",
+      "options": [
+        "GNU est le noyau, Linux est le système d'exploitation",
+        "GNU est le système d'exploitation (sans noyau), Linux est le noyau",
+        "Ce sont deux noms pour la même chose",
+        "GNU est une distribution, Linux est un éditeur de texte"
+      ],
+      "answer": "GNU est le système d'exploitation (sans noyau), Linux est le noyau",
+      "explanation": "GNU fournit les outils et bibliothèques du système (Stallman, 1983), Linux est le noyau (Torvalds, 1991).",
+      "wrong_answers": {
+        "GNU est le noyau, Linux est le système d'exploitation": "C'est exactement l'inverse.",
+        "Ce sont deux noms pour la même chose": "GNU et Linux sont deux projets distincts qui se complètent.",
+        "GNU est une distribution, Linux est un éditeur de texte": "Complètement faux."
+      }
+    },
+    {
+      "id": 104,
+      "theme": "Cycle de démarrage",
+      "question": "Quel est l'ordre correct du cycle de démarrage d'un système Linux ?",
+      "options": [
+        "GRUB → BIOS/UEFI → Noyau → systemd",
+        "BIOS/UEFI → GRUB → Noyau → init/systemd",
+        "Noyau → GRUB → BIOS/UEFI → systemd",
+        "systemd → Noyau → GRUB → BIOS/UEFI"
+      ],
+      "answer": "BIOS/UEFI → GRUB → Noyau → init/systemd",
+      "explanation": "Le firmware (BIOS/UEFI) charge le bootloader (GRUB), qui charge le noyau (vmlinuz), qui lance init/systemd (PID 1).",
+      "wrong_answers": {
+        "GRUB → BIOS/UEFI → Noyau → systemd": "GRUB ne peut pas démarrer avant le BIOS/UEFI. C'est le firmware qui charge GRUB.",
+        "Noyau → GRUB → BIOS/UEFI → systemd": "Complètement inversé. Le noyau est chargé par GRUB, il ne le précède pas.",
+        "systemd → Noyau → GRUB → BIOS/UEFI": "C'est l'ordre inverse. systemd est le dernier élément lancé."
+      }
+    },
+    {
+      "id": 105,
+      "theme": "Cycle de démarrage",
+      "question": "Où se trouve le fichier de configuration principal de GRUB ?",
+      "options": [
+        "/etc/grub/config",
+        "/boot/grub/grub.cfg",
+        "/etc/default/boot",
+        "/boot/loader.conf"
+      ],
+      "answer": "/boot/grub/grub.cfg",
+      "explanation": "Le fichier généré est /boot/grub/grub.cfg. En pratique, on modifie /etc/default/grub puis on régénère.",
+      "wrong_answers": {
+        "/etc/grub/config": "Ce fichier n'existe pas. La configuration GRUB est dans /boot/grub/.",
+        "/etc/default/boot": "Piège : le fichier éditable est /etc/default/grub (pas boot).",
+        "/boot/loader.conf": "Ce fichier est utilisé par systemd-boot, pas par GRUB."
+      }
+    },
+    {
+      "id": 106,
+      "theme": "Cycle de démarrage",
+      "question": "Quel est le PID du premier processus lancé par le noyau Linux ?",
+      "options": [
+        "0",
+        "1",
+        "100",
+        "1000"
+      ],
+      "answer": "1",
+      "explanation": "Le processus init (ou systemd) est le premier lancé par le noyau avec le PID 1.",
+      "wrong_answers": {
+        "0": "Le PID 0 est réservé au scheduler du noyau (swapper/idle), pas un processus utilisateur.",
+        "100": "Les PID sont attribués séquentiellement. Le PID 100 serait un processus lancé bien après l'init.",
+        "1000": "Les PID autour de 1000 sont généralement des processus utilisateur."
+      }
+    },
+    {
+      "id": 107,
+      "theme": "Cycle de démarrage",
+      "question": "Quelle commande permet d'afficher les messages de démarrage du noyau ?",
+      "options": [
+        "bootlog",
+        "dmesg",
+        "grub --log",
+        "cat /var/log/boot"
+      ],
+      "answer": "dmesg",
+      "explanation": "dmesg affiche le tampon de messages du noyau, incluant les messages de boot et la détection matérielle.",
+      "wrong_answers": {
+        "bootlog": "Cette commande n'existe pas en standard sous Linux.",
+        "grub --log": "GRUB n'a pas d'option --log. GRUB est le bootloader, pas un outil de diagnostic.",
+        "cat /var/log/boot": "Ce fichier n'est pas standard. dmesg est la commande universelle."
+      }
+    },
+    {
+      "id": 108,
+      "theme": "Gestion du Stockage",
+      "question": "Quelle est la principale différence entre MBR et GPT ?",
+      "options": [
+        "MBR est plus récent que GPT",
+        "GPT supporte des disques de plus de 2 To et plus de 4 partitions primaires",
+        "MBR est associé à UEFI, GPT est associé au BIOS",
+        "GPT ne supporte pas le multiboot"
+      ],
+      "answer": "GPT supporte des disques de plus de 2 To et plus de 4 partitions primaires",
+      "explanation": "MBR est limité à 2 To et 4 partitions primaires. GPT (associé à UEFI) supprime ces limites.",
+      "wrong_answers": {
+        "MBR est plus récent que GPT": "C'est l'inverse : MBR date de 1983, GPT est la norme moderne.",
+        "MBR est associé à UEFI, GPT est associé au BIOS": "C'est l'inverse : MBR → BIOS, GPT → UEFI.",
+        "GPT ne supporte pas le multiboot": "Faux : GPT supporte le multiboot via la partition EFI."
+      }
+    },
+    {
+      "id": 109,
+      "theme": "Gestion du Stockage",
+      "question": "Comment est nommé un disque NVMe dans /dev sous Linux ?",
+      "options": [
+        "/dev/sda",
+        "/dev/nvme0n1",
+        "/dev/hda",
+        "/dev/nvm0"
+      ],
+      "answer": "/dev/nvme0n1",
+      "explanation": "Les disques NVMe utilisent /dev/nvme[contrôleur]n[namespace]. Les partitions sont /dev/nvme0n1p1, p2, etc.",
+      "wrong_answers": {
+        "/dev/sda": "Piège : /dev/sda est pour les disques SATA ou SCSI, pas NVMe.",
+        "/dev/hda": "/dev/hda est pour les anciens disques IDE, technologie obsolète.",
+        "/dev/nvm0": "Cette nomenclature n'existe pas. Le format correct est nvme0n1."
+      }
+    },
+    {
+      "id": 110,
+      "theme": "Sécurité",
+      "question": "Que fait la commande 'chmod u+s programme' ?",
+      "options": [
+        "Elle rend le programme secret",
+        "Elle active le SetUID (exécution avec les droits du propriétaire)",
+        "Elle supprime les droits du propriétaire",
+        "Elle active le Sticky Bit"
+      ],
+      "answer": "Elle active le SetUID (exécution avec les droits du propriétaire)",
+      "explanation": "Le SetUID permet d'exécuter le programme avec les privilèges du propriétaire. Ex: /usr/bin/passwd est SetUID root.",
+      "wrong_answers": {
+        "Elle rend le programme secret": "chmod gère les permissions, pas la visibilité.",
+        "Elle supprime les droits du propriétaire": "u+s ajoute le SetUID, il ne supprime rien.",
+        "Elle active le Sticky Bit": "Piège : le Sticky Bit se place avec +t (chmod +t), pas u+s."
+      }
+    },
+    {
+      "id": 111,
+      "theme": "Sécurité",
+      "question": "Quel fichier permet de configurer les droits sudo des utilisateurs ?",
+      "options": [
+        "/etc/passwd",
+        "/etc/sudoers",
+        "/etc/sudo.conf",
+        "/etc/shadow"
+      ],
+      "answer": "/etc/sudoers",
+      "explanation": "/etc/sudoers définit qui peut exécuter quoi avec sudo. On l'édite avec visudo pour éviter les erreurs de syntaxe.",
+      "wrong_answers": {
+        "/etc/passwd": "Piège : /etc/passwd contient les informations des comptes, pas les droits sudo.",
+        "/etc/sudo.conf": "Ce fichier configure le comportement global de sudo (plugins), pas les droits par utilisateur.",
+        "/etc/shadow": "Piège : /etc/shadow contient les hachages des mots de passe."
+      }
+    },
+    {
+      "id": 112,
+      "theme": "Firewall",
+      "question": "Quelle commande permet de vérifier l'état du pare-feu Firewalld ?",
+      "options": [
+        "firewall-cmd --state",
+        "ufw status",
+        "iptables --status",
+        "systemctl firewall status"
+      ],
+      "answer": "firewall-cmd --state",
+      "explanation": "firewall-cmd est l'outil CLI de Firewalld. --state affiche si le service est actif ou non.",
+      "wrong_answers": {
+        "ufw status": "Piège : c'est la commande pour UFW, pas Firewalld. Ce sont deux pare-feux différents.",
+        "iptables --status": "iptables n'a pas d'option --status. On liste les règles avec iptables -L.",
+        "systemctl firewall status": "Piège : la syntaxe correcte serait 'systemctl status firewalld' (avec un d)."
+      }
+    },
+    {
+      "id": 113,
+      "theme": "Firewall",
+      "question": "Comment ajouter une règle permanente pour ouvrir le port 22/tcp avec Firewalld ?",
+      "options": [
+        "firewall-cmd --add-port=22/tcp --permanent",
+        "ufw allow 22",
+        "firewall-cmd --open 22",
+        "iptables -A INPUT -p tcp --dport 22"
+      ],
+      "answer": "firewall-cmd --add-port=22/tcp --permanent",
+      "explanation": "L'option --permanent rend la règle persistante après redémarrage. Sans elle, la règle est temporaire.",
+      "wrong_answers": {
+        "ufw allow 22": "Piège : syntaxe correcte pour UFW, pas pour Firewalld.",
+        "firewall-cmd --open 22": "L'option --open n'existe pas dans firewall-cmd.",
+        "iptables -A INPUT -p tcp --dport 22": "Piège : règle iptables valide, mais la question demande Firewalld."
+      }
+    },
+    {
+      "id": 114,
+      "theme": "Shell avancé",
+      "question": "Quel shell est compatible Bash avec autocomplétion avancée et personnalisation via Oh My ZSH ?",
+      "options": [
+        "Fish",
+        "Zsh",
+        "Dash",
+        "Sh"
+      ],
+      "answer": "Zsh",
+      "explanation": "Zsh est compatible Bash tout en ajoutant autocomplétion, correction, globbing avancé et Oh My ZSH.",
+      "wrong_answers": {
+        "Fish": "Piège : Fish est moderne mais PAS compatible Bash et ne supporte pas Oh My ZSH.",
+        "Dash": "Dash est un shell léger pour /bin/sh sur Debian, avec MOINS de fonctionnalités que Bash.",
+        "Sh": "Sh (Bourne Shell) est l'ancien shell de 1977, simple mais limité."
+      }
+    },
+    {
+      "id": 115,
+      "theme": "Shell avancé",
+      "question": "Comment changer le shell par défaut d'un utilisateur pour Zsh ?",
+      "options": [
+        "shell --set zsh",
+        "chsh -s $(which zsh)",
+        "usermod --zsh",
+        "export SHELL=zsh"
+      ],
+      "answer": "chsh -s $(which zsh)",
+      "explanation": "chsh (change shell) avec -s modifie le shell de connexion. $(which zsh) retourne le chemin complet.",
+      "wrong_answers": {
+        "shell --set zsh": "La commande 'shell' n'existe pas sous Linux.",
+        "usermod --zsh": "Piège : usermod -s /usr/bin/zsh fonctionne, mais --zsh n'est pas une option valide.",
+        "export SHELL=zsh": "Piège : change la variable pour la session courante seulement, pas le shell par défaut permanent."
+      }
+    },
+    {
+      "id": 116,
+      "theme": "Éditeurs",
+      "question": "Dans Vim, comment quitter sans sauvegarder les modifications ?",
+      "options": [
+        ":q!",
+        ":w",
+        ":x",
+        "CTRL+X"
+      ],
+      "answer": ":q!",
+      "explanation": ":q! force la fermeture en ignorant les modifications. Le ! annule la protection contre la perte de données.",
+      "wrong_answers": {
+        ":w": "Piège : :w sauvegarde le fichier sans quitter.",
+        ":x": "Piège : :x sauvegarde ET quitte. On perdrait les modifs qu'on voulait annuler.",
+        "CTRL+X": "Piège : CTRL+X est le raccourci pour quitter Nano, pas Vim."
+      }
+    },
+    {
+      "id": 117,
+      "theme": "Scripting Bash",
+      "question": "Que contient la variable spéciale $0 dans un script Bash ?",
+      "options": [
+        "Le nombre d'arguments",
+        "Le nom du script",
+        "Le code de retour",
+        "Le PID du script"
+      ],
+      "answer": "Le nom du script",
+      "explanation": "$0 contient le nom (ou le chemin) du script en cours d'exécution. $1, $2... contiennent les arguments.",
+      "wrong_answers": {
+        "Le nombre d'arguments": "Piège : c'est $# qui contient le nombre d'arguments.",
+        "Le code de retour": "Piège : c'est $? qui contient le code de retour de la dernière commande.",
+        "Le PID du script": "Piège : c'est $$ qui contient le PID du shell courant."
+      }
+    },
+    {
+      "id": 118,
+      "theme": "Scripting Bash",
+      "question": "Quelle est la syntaxe correcte d'une condition if en Bash ?",
+      "options": [
+        "if (condition) { commande }",
+        "if [ condition ]; then commande; fi",
+        "if condition do commande done",
+        "if condition: commande endif"
+      ],
+      "answer": "if [ condition ]; then commande; fi",
+      "explanation": "En Bash : if [ condition ]; then ... elif ... else ... fi. Les crochets sont un alias pour test.",
+      "wrong_answers": {
+        "if (condition) { commande }": "Syntaxe C/Java/JavaScript, pas Bash.",
+        "if condition do commande done": "Piège : do/done est pour les boucles (while, for), pas les conditions.",
+        "if condition: commande endif": "Proche de Python (if condition:). Bash utilise then/fi."
+      }
+    },
+    {
+      "id": 119,
+      "theme": "Scripting Bash",
+      "question": "Quelle option de la commande test vérifie si un fichier existe ?",
+      "options": [
+        "-e",
+        "-d",
+        "-w",
+        "-x"
+      ],
+      "answer": "-e",
+      "explanation": "test -e fichier vérifie l'existence du fichier, quel que soit son type (fichier, répertoire, lien...).",
+      "wrong_answers": {
+        "-d": "Piège : -d vérifie si c'est un répertoire (directory), pas juste l'existence.",
+        "-w": "Piège : -w vérifie si le fichier existe ET est accessible en écriture (write).",
+        "-x": "Piège : -x vérifie si le fichier existe ET est exécutable. Plus restrictif que -e."
+      }
+    },
+    {
+      "id": 120,
+      "theme": "Scripting Bash",
+      "question": "Quelle boucle Bash s'exécute TANT QUE la condition est fausse ?",
+      "options": [
+        "while",
+        "for",
+        "until",
+        "do"
+      ],
+      "answer": "until",
+      "explanation": "until exécute le bloc tant que la condition est fausse (inverse de while).",
+      "wrong_answers": {
+        "while": "Piège : while s'exécute tant que la condition est VRAIE. C'est l'inverse de until.",
+        "for": "for itère sur une liste de valeurs, il ne teste pas une condition vraie/fausse.",
+        "do": "do n'est pas une boucle, c'est un mot-clé qui marque le début du bloc."
+      }
+    },
+    {
+      "id": 121,
+      "theme": "Maintenance",
+      "question": "Quelle commande permet de consulter les logs du service SSH via systemd ?",
+      "options": [
+        "cat /var/log/ssh",
+        "journalctl -u ssh",
+        "systemctl log ssh",
+        "dmesg | grep ssh"
+      ],
+      "answer": "journalctl -u ssh",
+      "explanation": "journalctl -u filtre les logs par unité systemd. -u ssh affiche uniquement les logs du service SSH.",
+      "wrong_answers": {
+        "cat /var/log/ssh": "Ce fichier n'existe pas en standard. Les logs SSH sont dans /var/log/auth.log ou via journalctl.",
+        "systemctl log ssh": "L'option 'log' n'existe pas pour systemctl. systemctl gère les services, pas les logs.",
+        "dmesg | grep ssh": "Piège : dmesg affiche les messages du noyau (hardware, boot), pas les logs des services."
+      }
+    },
+    {
+      "id": 122,
+      "theme": "Maintenance",
+      "question": "Quelle commande permet de vérifier l'état d'un service sous systemd ?",
+      "options": [
+        "service check sshd",
+        "systemctl status sshd",
+        "init status sshd",
+        "sshd --status"
+      ],
+      "answer": "systemctl status sshd",
+      "explanation": "systemctl est l'outil principal pour gérer les services sous systemd. 'status' affiche l'état, les logs récents et le PID.",
+      "wrong_answers": {
+        "service check sshd": "Piège : 'service' est un ancien wrapper, et l'action 'check' n'existe pas.",
+        "init status sshd": "init ne fonctionne pas comme ça. Sous SysVinit : /etc/init.d/sshd status.",
+        "sshd --status": "Les démons n'ont pas d'option --status. On passe par le système d'init."
+      }
+    },
+    {
+      "id": 123,
+      "theme": "Environnement graphique",
+      "question": "Quel environnement graphique Linux est connu pour être le plus léger ?",
+      "options": [
+        "GNOME",
+        "KDE",
+        "XFCE",
+        "Unity"
+      ],
+      "answer": "XFCE",
+      "explanation": "XFCE est le plus léger des principaux environnements. Créé en 1996, basé sur GTK2+.",
+      "wrong_answers": {
+        "GNOME": "GNOME est simple et fonctionnel basé sur GTK, mais plus lourd que XFCE.",
+        "KDE": "KDE est complet et ergonomique basé sur Qt, mais plus riche et plus lourd.",
+        "Unity": "Unity était le bureau d'Ubuntu (2011-2017). Pas particulièrement léger."
+      }
+    },
+    {
+      "id": 124,
+      "theme": "Gestion des Paquets",
+      "question": "Quel gestionnaire de paquets utilise le format .rpm ?",
+      "options": [
+        "APT",
+        "Pacman",
+        "YUM / DNF",
+        "Portage"
+      ],
+      "answer": "YUM / DNF",
+      "explanation": "YUM (Yellow Dog Updater, Modified) et son successeur DNF utilisent .rpm pour Red Hat, CentOS et Fedora.",
+      "wrong_answers": {
+        "APT": "Piège : APT utilise le format .deb. C'est le gestionnaire de Debian/Ubuntu.",
+        "Pacman": "Pacman utilise .tar.gz/.tar.zst. C'est le gestionnaire d'Arch Linux.",
+        "Portage": "Portage (emerge) compile depuis les sources sur Gentoo."
+      }
+    },
+    {
+      "id": 125,
+      "theme": "Sauvegarde",
+      "question": "Que signifie la règle de sauvegarde '3-2-1' ?",
+      "options": [
+        "3 sauvegardes par jour, 2 par semaine, 1 par mois",
+        "3 copies des données, 2 formats différents, 1 copie hors site",
+        "3 disques, 2 partitions, 1 RAID",
+        "3 utilisateurs, 2 groupes, 1 admin"
+      ],
+      "answer": "3 copies des données, 2 formats différents, 1 copie hors site",
+      "explanation": "La règle 3-2-1 : 3 copies, sur 2 supports différents, dont 1 hors site (cloud, site distant).",
+      "wrong_answers": {
+        "3 sauvegardes par jour, 2 par semaine, 1 par mois": "C'est une stratégie de fréquence, pas la règle 3-2-1 qui concerne la redondance.",
+        "3 disques, 2 partitions, 1 RAID": "Cela décrit une configuration de stockage, pas la règle 3-2-1.",
+        "3 utilisateurs, 2 groupes, 1 admin": "Sans rapport avec la sauvegarde."
+      }
+    },
+    {
+      "id": 126,
+      "theme": "Sauvegarde",
+      "question": "Quelle est la différence entre une sauvegarde incrémentale et différentielle ?",
+      "options": [
+        "Il n'y a aucune différence",
+        "L'incrémentale sauvegarde depuis la dernière sauvegarde, la différentielle depuis la dernière complète",
+        "La différentielle est plus rapide que l'incrémentale",
+        "L'incrémentale nécessite plus d'espace disque"
+      ],
+      "answer": "L'incrémentale sauvegarde depuis la dernière sauvegarde, la différentielle depuis la dernière complète",
+      "explanation": "L'incrémentale copie les changements depuis la DERNIÈRE sauvegarde. La différentielle depuis la dernière COMPLÈTE.",
+      "wrong_answers": {
+        "Il n'y a aucune différence": "Différence majeure : le point de référence (dernière sauvegarde vs dernière complète).",
+        "La différentielle est plus rapide que l'incrémentale": "C'est l'inverse : la différentielle copie plus de données.",
+        "L'incrémentale nécessite plus d'espace disque": "C'est l'inverse : l'incrémentale est plus économe."
+      }
+    },
+    {
+      "id": 127,
+      "theme": "Sauvegarde",
+      "question": "Quel outil de sauvegarde offre la déduplication et le chiffrement natif ?",
+      "options": [
+        "rsync",
+        "tar",
+        "borgbackup",
+        "cp"
+      ],
+      "answer": "borgbackup",
+      "explanation": "Borgbackup offre déduplication, compression, chiffrement natif et gestion des versions.",
+      "wrong_answers": {
+        "rsync": "Piège : rsync est puissant pour la synchronisation, mais sans déduplication ni chiffrement natif.",
+        "tar": "tar archive et compresse, mais sans déduplication ni chiffrement. Pour chiffrer, il faut gpg.",
+        "cp": "cp est une simple copie sans fonctionnalité avancée."
+      }
+    },
+    {
+      "id": 128,
+      "theme": "Scripting Bash",
+      "question": "Quelle commande sed remplace TOUTES les occurrences de 'erreur' par 'error' dans un fichier ?",
+      "options": [
+        "sed 's/erreur/error/' fichier.txt",
+        "sed 's/erreur/error/g' fichier.txt",
+        "sed 'd/erreur/error/' fichier.txt",
+        "sed --replace erreur error fichier.txt"
+      ],
+      "answer": "sed 's/erreur/error/g' fichier.txt",
+      "explanation": "s/ pour substitution, /g pour global (toutes les occurrences). Sans g, seule la première par ligne est remplacée.",
+      "wrong_answers": {
+        "sed 's/erreur/error/' fichier.txt": "Piège : sans 'g', seule la PREMIÈRE occurrence de chaque ligne est remplacée.",
+        "sed 'd/erreur/error/' fichier.txt": "Le flag 'd' dans sed supprime des lignes entières, pas de substitution.",
+        "sed --replace erreur error fichier.txt": "Cette syntaxe n'existe pas pour sed."
+      }
+    },
+    {
+      "id": 129,
+      "theme": "Variables",
+      "question": "Quelle variable d'environnement contient le chemin du répertoire personnel ?",
+      "options": [
+        "$USER",
+        "$HOME",
+        "$PATH",
+        "$PWD"
+      ],
+      "answer": "$HOME",
+      "explanation": "$HOME contient le chemin absolu du répertoire personnel (ex: /home/alice).",
+      "wrong_answers": {
+        "$USER": "Piège : $USER contient le nom de l'utilisateur (ex: alice), pas le chemin.",
+        "$PATH": "Piège : $PATH contient la liste des répertoires où le système cherche les exécutables.",
+        "$PWD": "Piège : $PWD contient le répertoire de travail ACTUEL, pas le répertoire personnel."
+      }
+    },
+    {
+      "id": 130,
+      "theme": "Variables",
+      "question": "Comment exporter une variable pour qu'elle soit disponible dans les sous-processus ?",
+      "options": [
+        "global var=\"valeur\"",
+        "export var=\"valeur\"",
+        "set var=\"valeur\"",
+        "env var=\"valeur\""
+      ],
+      "answer": "export var=\"valeur\"",
+      "explanation": "export rend une variable accessible aux processus enfants. Sans export, elle reste locale au shell.",
+      "wrong_answers": {
+        "global var=\"valeur\"": "'global' n'est pas un mot-clé Bash. C'est un concept d'autres langages.",
+        "set var=\"valeur\"": "Piège : set modifie les paramètres positionnels du shell, pas les variables d'environnement.",
+        "env var=\"valeur\"": "Piège : env exécute une commande dans un environnement modifié, mais ne persiste pas la variable."
+      }
     }
   ]
 }
