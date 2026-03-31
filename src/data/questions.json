@@ -1,0 +1,905 @@
+{
+  "quiz_title": "Certification Administrateur Linux PME",
+  "questions": [
+    {
+      "id": 1,
+      "theme": "Installation & Gentoo",
+      "question": "Dans la procédure d'installation Gentoo, quelle commande permet de synchroniser l'horloge système avec l'horloge matérielle ?",
+      "options": [
+        "date --sync",
+        "hwclock --systohc",
+        "timedatectl set-time",
+        "ntpdate -u"
+      ],
+      "answer": "hwclock --systohc",
+      "explanation": "La commande hwclock --systohc est utilisée pour régler l'horloge matérielle à partir de l'horloge système[cite: 463]."
+    },
+    {
+      "id": 2,
+      "theme": "Gestion du Stockage",
+      "question": "Quel composant LVM permet de regrouper plusieurs disques physiques (PV) en un seul pool de stockage ?",
+      "options": [
+        "Logical Volume (LV)",
+        "Volume Group (VG)",
+        "Physical Extent (PE)",
+        "Partition Table"
+      ],
+      "answer": "Volume Group (VG)",
+      "explanation": "Le Volume Group (VG) est l'entité qui agrège un ou plusieurs Physical Volumes (PV)[cite: 18, 807]."
+    },
+    {
+      "id": 3,
+      "theme": "Permissions",
+      "question": "Quelle est la valeur octale pour donner les droits 'rwx' au propriétaire, 'rx' au groupe et aucun droit aux autres ?",
+      "options": [
+        "755",
+        "750",
+        "640",
+        "770"
+      ],
+      "answer": "750",
+      "explanation": "7 (rwx) pour le proprio, 5 (r-x) pour le groupe, 0 (---) pour les autres[cite: 737]."
+    },
+    {
+      "id": 4,
+      "theme": "Scripting Bash",
+      "question": "Quelle variable spéciale contient le nombre d'arguments passés à un script shell ?",
+      "options": [
+        "$@",
+        "$#",
+        "$?",
+        "$*"
+      ],
+      "answer": "$#",
+      "explanation": "$# renvoie le nombre total de paramètres positionnels[cite: 1015]."
+    },
+    {
+      "id": 5,
+      "theme": "Sécurité",
+      "question": "Quel outil permet de bannir une IP après 3 échecs de connexion SSH pendant 10 minutes ?",
+      "options": [
+        "UFW",
+        "IPtables",
+        "Fail2ban",
+        "CrowdSec"
+      ],
+      "answer": "Fail2ban",
+      "explanation": "Fail2ban est configuré spécifiquement pour surveiller les logs et bannir après X échecs[cite: 31, 994]."
+    },
+    {
+      "id": 6,
+      "theme": "Arborescence",
+      "question": "Dans quel répertoire se trouvent généralement les fichiers de configuration globale du système ?",
+      "options": [
+        "/var",
+        "/etc",
+        "/opt",
+        "/usr"
+      ],
+      "answer": "/etc",
+      "explanation": "Le répertoire /etc contient les fichiers de configuration du système[cite: 747]."
+    },
+    {
+      "id": 7,
+      "theme": "Gestion du Stockage",
+      "question": "Quelle commande est utilisée pour créer un Physical Volume dans LVM ?",
+      "options": [
+        "pvcreate",
+        "vgcreate",
+        "mkfs.pv",
+        "fdisk -l"
+      ],
+      "answer": "pvcreate",
+      "explanation": "On transforme un disque ou une partition en PV avec pvcreate[cite: 805]."
+    },
+    {
+      "id": 8,
+      "theme": "Scripting & Logs",
+      "question": "Quelle commande permet d'extraire uniquement les lignes contenant 'failed' dans le fichier /var/log/auth.log ?",
+      "options": [
+        "find /var/log/auth.log -name failed",
+        "cat /var/log/auth.log | grep failed",
+        "tail -f /var/log/auth.log",
+        "sed 'failed' /var/log/auth.log"
+      ],
+      "answer": "cat /var/log/auth.log | grep failed",
+      "explanation": "Grep est l'outil standard pour filtrer des motifs dans des fichiers ou flux[cite: 973]."
+    },
+    {
+      "id": 9,
+      "theme": "Sauvegarde",
+      "question": "Dans une crontab, que signifie la configuration '0 2 * * *' ?",
+      "options": [
+        "Toutes les 2 minutes",
+        "Tous les jours à 2h du matin",
+        "Tous les 2 du mois à minuit",
+        "Uniquement le mardi à minuit"
+      ],
+      "answer": "Tous les jours à 2h du matin",
+      "explanation": "Le second champ représente les heures (2), le premier les minutes (0)[cite: 26, 1058]."
+    },
+    {
+      "id": 10,
+      "theme": "Installation Gentoo",
+      "question": "À quoi sert le fichier 'stage3' lors de l'installation de Gentoo ?",
+      "options": [
+        "C'est le chargeur d'amorçage",
+        "C'est une archive contenant le système de base minimal",
+        "C'est le code source du noyau à compiler",
+        "C'est l'interface graphique par défaut"
+      ],
+      "answer": "C'est une archive contenant le système de base minimal",
+      "explanation": "Le stage3 contient les fichiers essentiels pour démarrer un environnement Gentoo[cite: 289]."
+    },
+    {
+      "id": 11,
+      "theme": "Utilisateurs",
+      "question": "Comment créer un utilisateur avec un shell restreint pour limiter ses actions ?",
+      "options": [
+        "useradd -s /bin/rbash utilisateur",
+        "passwd -l utilisateur",
+        "chown -R root /home/utilisateur",
+        "usermod -G restricted utilisateur"
+      ],
+      "answer": "useradd -s /bin/rbash utilisateur",
+      "explanation": "Le shell rbash (Restricted Bash) limite les commandes utilisables par l'utilisateur[cite: 11, 888]."
+    },
+    {
+      "id": 12,
+      "theme": "Maintenance",
+      "question": "Quelle commande permet de visualiser en temps réel les processus consommant le plus de CPU ?",
+      "options": [
+        "ps aux",
+        "top",
+        "df -h",
+        "free -m"
+      ],
+      "answer": "top",
+      "explanation": "Top (ou htop) fournit une vue dynamique des processus actifs[cite: 979]."
+    },
+    {
+      "id": 13,
+      "theme": "Réseau",
+      "question": "Quelle commande affiche les adresses IP configurées sur toutes les interfaces réseau ?",
+      "options": [
+        "ifconfig --set",
+        "ip a",
+        "netstat -rn",
+        "ping localhost"
+      ],
+      "answer": "ip a",
+      "explanation": "La commande 'ip address' (ou 'ip a') remplace l'ancien ifconfig[cite: 574]."
+    },
+    {
+      "id": 14,
+      "theme": "Gestion du Stockage",
+      "question": "Comment activer une partition de SWAP après l'avoir créée ?",
+      "options": [
+        "mount /dev/sdaX",
+        "swapon /dev/sdaX",
+        "enable-swap /dev/sdaX",
+        "swap -a"
+      ],
+      "answer": "swapon /dev/sdaX",
+      "explanation": "On active l'espace d'échange avec swapon[cite: 279, 786]."
+    },
+    {
+      "id": 15,
+      "theme": "Scripting Bash",
+      "question": "Comment lire une saisie utilisateur et la stocker dans une variable appelée 'NOM' ?",
+      "options": [
+        "get NOM",
+        "read NOM",
+        "input $NOM",
+        "variable NOM = stdin"
+      ],
+      "answer": "read NOM",
+      "explanation": "La commande read permet de capturer l'entrée standard[cite: 763, 883]."
+    },
+    {
+      "id": 16,
+      "theme": "Gestion des Paquets",
+      "question": "Sur une distribution basée sur Debian, quelle commande met à jour la liste locale des paquets ?",
+      "options": [
+        "apt upgrade",
+        "apt update",
+        "apt install list",
+        "dpkg -L"
+      ],
+      "answer": "apt update",
+      "explanation": "Apt update télécharge les dernières informations des dépôts[cite: 948]."
+    },
+    {
+      "id": 17,
+      "theme": "Sécurité",
+      "question": "Avec UFW, quelle commande permet d'autoriser le port 80 pour tout le monde ?",
+      "options": [
+        "ufw allow 80",
+        "ufw open http",
+        "ufw deny 80",
+        "ufw permit --port 80"
+      ],
+      "answer": "ufw allow 80",
+      "explanation": "La syntaxe standard est 'ufw allow [port/service]'[cite: 911]."
+    },
+    {
+      "id": 18,
+      "theme": "Scripting Bash",
+      "question": "Que signifie le symbole '>>' dans une commande shell ?",
+      "options": [
+        "Écraser le contenu d'un fichier",
+        "Ajouter du contenu à la fin d'un fichier sans l'écraser",
+        "Lire le contenu d'un fichier",
+        "Comparer deux fichiers"
+      ],
+      "answer": "Ajouter du contenu à la fin d'un fichier sans l'écraser",
+      "explanation": "L'opérateur de redirection >> concatène les données au fichier[cite: 33, 936]."
+    },
+    {
+      "id": 19,
+      "theme": "Installation Gentoo",
+      "question": "Quel utilitaire est utilisé pour compiler et installer des paquets sur Gentoo ?",
+      "options": [
+        "apt",
+        "pacman",
+        "emerge",
+        "dnf"
+      ],
+      "answer": "emerge",
+      "explanation": "Emerge est l'interface en ligne de commande pour le système Portage de Gentoo[cite: 336, 501]."
+    },
+    {
+      "id": 20,
+      "theme": "Sauvegarde",
+      "question": "Quelle option de 'tar' permet de compresser l'archive au format gzip ?",
+      "options": [
+        "-c",
+        "-z",
+        "-x",
+        "-v"
+      ],
+      "answer": "-z",
+      "explanation": "L'option -z appelle gzip pour la compression[cite: 1027]."
+    },
+    {
+        "id": 21,
+        "theme": "Utilisateurs",
+        "question": "Quelle commande permet de changer le groupe propriétaire d'un fichier ?",
+        "options": ["chmod", "chown", "chgrp", "usermod"],
+        "answer": "chgrp",
+        "explanation": "chgrp (change group) est dédié à cette tâche, bien que chown puisse aussi le faire[cite: 736]."
+    },
+    {
+        "id": 22,
+        "theme": "Maintenance",
+        "question": "Que fait la commande 'free -m' ?",
+        "options": ["Affiche l'espace disque en Mo", "Affiche la mémoire RAM et Swap en Mo", "Libère la mémoire cache", "Affiche les processus gratuits"],
+        "answer": "Affiche la mémoire RAM et Swap en Mo",
+        "explanation": "L'option -m affiche les valeurs en Megabytes[cite: 787, 982]."
+    },
+    {
+        "id": 23,
+        "theme": "Sécurité",
+        "question": "Quel fichier contient les hachages des mots de passe des utilisateurs ?",
+        "options": ["/etc/passwd", "/etc/shadow", "/etc/group", "/etc/gshadow"],
+        "answer": "/etc/shadow",
+        "explanation": "/etc/shadow est sécurisé et n'est lisible que par root[cite: 627]."
+    },
+    {
+        "id": 24,
+        "theme": "Gestion du Stockage",
+        "question": "Comment lister tous les disques physiques détectés par le système ?",
+        "options": ["lsblk", "df -h", "cat /etc/fstab", "mount"],
+        "answer": "lsblk",
+        "explanation": "lsblk affiche la structure en blocs (disques et partitions)[cite: 773]."
+    },
+    {
+        "id": 25,
+        "theme": "Scripting Bash",
+        "question": "Quelle est la première ligne indispensable d'un script Bash ?",
+        "options": ["#!/bin/sh", "#!/bin/bash", "# start script", "import bash"],
+        "answer": "#!/bin/bash",
+        "explanation": "Le 'shebang' indique au système quel interpréteur utiliser[cite: 329]."
+    },
+    {
+        "id": 26,
+        "theme": "Installation Gentoo",
+        "question": "Quelle variable dans make.conf définit les drapeaux de compilation optimisés ?",
+        "options": ["USE", "COMMON_FLAGS", "MAKEOPTS", "VIDEO_CARDS"],
+        "answer": "COMMON_FLAGS",
+        "explanation": "COMMON_FLAGS regroupe les paramètres CFLAGS et CXXFLAGS[cite: 317]."
+    },
+    {
+        "id": 27,
+        "theme": "Réseau",
+        "question": "Comment redémarrer le service SSH sur un système utilisant OpenRC (comme Gentoo) ?",
+        "options": ["systemctl restart sshd", "/etc/init.d/sshd restart", "service ssh reload", "sshd --restart"],
+        "answer": "/etc/init.d/sshd restart",
+        "explanation": "Gentoo utilise OpenRC avec des scripts dans /etc/init.d/[cite: 166, 189]."
+    },
+    {
+        "id": 28,
+        "theme": "Permissions",
+        "question": "Que signifie le droit 'x' sur un répertoire ?",
+        "options": ["Droit de supprimer le répertoire", "Droit de traverser (entrer dans) le répertoire", "Droit de lister les fichiers", "Droit d'exécuter tous les fichiers dedans"],
+        "answer": "Droit de traverser (entrer dans) le répertoire",
+        "explanation": "Sans 'x', on ne peut pas faire un 'cd' dans le dossier[cite: 736]."
+    },
+    {
+        "id": 29,
+        "theme": "Sécurité",
+        "question": "Quelle règle IPTables permet de limiter à 5 le nombre de connexions par minute sur le port 80 ?",
+        "options": ["-m limit --limit 5/m", "-p tcp --dport 80 --max 5", "ufw limit 80", "iptables --drop-fast"],
+        "answer": "-m limit --limit 5/m",
+        "explanation": "L'extension 'limit' d'IPTables gère le rate-limiting[cite: 928]."
+    },
+    {
+        "id": 30,
+        "theme": "Arborescence",
+        "question": "Où sont stockés les fichiers journaux (logs) du système ?",
+        "options": ["/etc/logs", "/usr/log", "/var/log", "/home/log"],
+        "answer": "/var/log",
+        "explanation": "/var/log est le standard pour les données variables comme les journaux[cite: 969]."
+    },
+    {
+      "id": 31,
+      "theme": "Gestion du Stockage",
+      "question": "Quelle commande permet de redimensionner un système de fichiers ext4 après avoir étendu un Logical Volume ?",
+      "options": ["resize2fs", "xfs_growfs", "lvresize --fs", "extend4fs"],
+      "answer": "resize2fs",
+      "explanation": "resize2fs est l'outil spécifique pour ajuster la taille des systèmes de fichiers ext2/3/4[cite: 20, 816]."
+    },
+    {
+      "id": 32,
+      "theme": "Installation Gentoo",
+      "question": "Dans le processus Gentoo, quel outil génère l'image initramfs pour le noyau ?",
+      "options": ["mkinitcpio", "dracut", "genkernel", "grub-mkconfig"],
+      "answer": "dracut",
+      "explanation": "La procédure recommande l'utilisation de dracut pour préparer le démarrage du noyau[cite: 509, 510]."
+    },
+    {
+      "id": 33,
+      "theme": "Permissions",
+      "question": "Que permet de faire la commande 'chown -R user:group dossier' ?",
+      "options": ["Changer les droits en lecture seule", "Changer le propriétaire et le groupe de manière récursive", "Supprimer le dossier", "Masquer le dossier"],
+      "answer": "Changer le propriétaire et le groupe de manière récursive",
+      "explanation": "L'option -R applique le changement à tous les sous-fichiers et dossiers[cite: 1046]."
+    },
+    {
+      "id": 34,
+      "theme": "Sécurité",
+      "question": "Quel est l'avantage principal de CrowdSec par rapport à Fail2ban ?",
+      "options": ["Il ne nécessite pas de firewall", "Il partage les adresses IP malveillantes avec une base communautaire", "Il est écrit en Bash", "Il ne surveille que le port 80"],
+      "answer": "Il partage les adresses IP malveillantes avec une base communautaire",
+      "explanation": "CrowdSec utilise une approche collaborative pour détecter les attaques."
+    },
+    {
+      "id": 35,
+      "theme": "Maintenance",
+      "question": "Comment identifier le processus qui consomme le plus de mémoire vive avec la commande 'ps' ?",
+      "options": ["ps aux --sort=-%mem", "ps -ef", "ps mem-max", "ps aux | grep ram"],
+      "answer": "ps aux --sort=-%mem",
+      "explanation": "L'option --sort permet de classer les processus par ressource utilisée[cite: 978, 979]."
+    },
+    {
+      "id": 36,
+      "theme": "Réseau",
+      "question": "Dans quel fichier configure-t-on le nom d'hôte de la machine sur une Debian/Ubuntu ?",
+      "options": ["/etc/network", "/etc/hostname", "/etc/hosts", "/etc/resolv.conf"],
+      "answer": "/etc/hostname",
+      "explanation": "Ce fichier contient le nom unique de la machine sur le réseau[cite: 567, 835]."
+    },
+    {
+      "id": 37,
+      "theme": "Scripting Bash",
+      "question": "Comment vérifier le code de retour de la dernière commande exécutée ?",
+      "options": ["echo $!", "echo $?", "echo $#", "echo $$"],
+      "answer": "echo $?",
+      "explanation": "$? contient 0 si la commande a réussi, ou une autre valeur en cas d'erreur."
+    },
+    {
+      "id": 38,
+      "theme": "Gestion du Stockage",
+      "question": "Que signifie l'option 'defaults' dans le fichier /etc/fstab ?",
+      "options": ["Utiliser les réglages recommandés (rw, suid, dev, exec, auto, nouser, async)", "Le disque est formaté en FAT32", "Le montage est temporaire", "Le disque sera ignoré au démarrage"],
+      "answer": "Utiliser les réglages recommandés (rw, suid, dev, exec, auto, nouser, async)",
+      "explanation": "C'est un raccourci pour les options de montage les plus courantes[cite: 485]."
+    },
+    {
+      "id": 39,
+      "theme": "Sauvegarde",
+      "question": "Quelle option de 'rsync' permet de supprimer les fichiers dans la destination s'ils n'existent plus dans la source ?",
+      "options": ["--remove", "--delete", "--sync", "--clean"],
+      "answer": "--delete",
+      "explanation": "--delete assure une synchronisation miroir exacte[cite: 1049]."
+    },
+    {
+      "id": 40,
+      "theme": "Utilisateurs",
+      "question": "Quelle commande permet d'ajouter un utilisateur existant à un groupe supplémentaire sans supprimer ses groupes actuels ?",
+      "options": ["usermod -G", "usermod -aG", "useradd -g", "groupadd -u"],
+      "answer": "usermod -aG",
+      "explanation": "L'option -a (append) est cruciale pour ne pas écraser l'appartenance aux autres groupes[cite: 641]."
+    },
+    {
+      "id": 41,
+      "theme": "Installation Gentoo",
+      "question": "Que fait la commande 'eselect profile list' ?",
+      "options": ["Elle liste les utilisateurs connectés", "Elle liste les configurations système prédéfinies disponibles", "Elle affiche la vitesse du processeur", "Elle configure la carte graphique"],
+      "answer": "Elle liste les configurations système prédéfinies disponibles",
+      "explanation": "Les profils définissent les réglages par défaut pour tout le système Gentoo[cite: 389, 523]."
+    },
+    {
+      "id": 42,
+      "theme": "Maintenance",
+      "question": "Quelle commande permet de tuer un processus en utilisant son nom au lieu de son PID ?",
+      "options": ["kill", "pkill", "stop", "rmproc"],
+      "answer": "pkill",
+      "explanation": "pkill (ou killall) permet de cibler des processus par leur nom[cite: 980]."
+    },
+    {
+      "id": 43,
+      "theme": "Réseau",
+      "question": "Quel port est utilisé par défaut par le protocole HTTPS ?",
+      "options": ["80", "22", "443", "3306"],
+      "answer": "443",
+      "explanation": "Le port 443 est le standard pour le trafic web sécurisé[cite: 912]."
+    },
+    {
+      "id": 44,
+      "theme": "Scripting Bash",
+      "question": "Comment déclarer un tableau en Bash ?",
+      "options": ["array=(val1 val2)", "list = [val1, val2]", "set array val1 val2", "declare array"],
+      "answer": "array=(val1 val2)",
+      "explanation": "Les parenthèses sont utilisées pour définir des listes d'éléments en Bash."
+    },
+    {
+      "id": 45,
+      "theme": "Gestion du Stockage",
+      "question": "Quelle commande affiche l'utilisation de l'espace disque de manière lisible pour un humain (Go, Mo) ?",
+      "options": ["df -h", "ls -l", "du -s", "fdisk -v"],
+      "answer": "df -h",
+      "explanation": "-h signifie 'human-readable'[cite: 816, 848]."
+    },
+    {
+      "id": 46,
+      "theme": "Sécurité",
+      "question": "Dans UFW, quelle est la différence entre 'REJECT' et 'DROP' ?",
+      "options": ["Il n'y a aucune différence", "DROP ignore le paquet, REJECT renvoie une erreur à l'expéditeur", "REJECT est plus lent", "DROP est réservé aux ports USB"],
+      "answer": "DROP ignore le paquet, REJECT renvoie une erreur à l'expéditeur",
+      "explanation": "DROP est souvent préféré pour ne pas confirmer l'existence d'un serveur aux scanners."
+    },
+    {
+      "id": 47,
+      "theme": "Installation Gentoo",
+      "question": "Comment quitter l'environnement 'chroot' ?",
+      "options": ["quit", "exit", "shutdown", "umount"],
+      "answer": "exit",
+      "explanation": "La commande exit met fin au shell actuel et revient au système hôte (Live CD)[cite: 657]."
+    },
+    {
+      "id": 48,
+      "theme": "Sauvegarde",
+      "question": "À quoi sert l'option '-p' lors d'une copie avec 'cp' ou 'tar' ?",
+      "options": ["À afficher la progression", "À préserver les permissions et attributs d'origine", "À compresser les données", "À protéger le fichier par mot de passe"],
+      "answer": "À préserver les permissions et attributs d'origine",
+      "explanation": "C'est essentiel pour maintenir l'intégrité des droits lors d'une sauvegarde[cite: 310, 1046]."
+    },
+    {
+      "id": 49,
+      "theme": "Réseau",
+      "question": "Quelle commande permet de tester la connectivité réseau vers un serveur distant ?",
+      "options": ["tracepath", "ping", "connect", "net-check"],
+      "answer": "ping",
+      "explanation": "Ping utilise le protocole ICMP pour vérifier si une machine répond[cite: 175, 177]."
+    },
+    {
+      "id": 50,
+      "theme": "Gestion des Paquets",
+      "question": "Comment lister tous les fichiers installés par un paquet spécifique sur Debian ?",
+      "options": ["apt list", "dpkg -L nom_du_paquet", "apt-get show", "ls /usr/bin"],
+      "answer": "dpkg -L nom_du_paquet",
+      "explanation": "dpkg gère les opérations de bas niveau sur les fichiers des paquets[cite: 102, 960]."
+    },
+    {
+      "id": 51,
+      "theme": "Gestion du Stockage",
+      "question": "Comment créer un Volume Group nommé 'data_vg' à partir du disque '/dev/sdb1' ?",
+      "options": ["vgcreate data_vg /dev/sdb1", "pvcreate /dev/sdb1 data_vg", "lvcreate -n data_vg", "vgadd /dev/sdb1"],
+      "answer": "vgcreate data_vg /dev/sdb1",
+      "explanation": "La syntaxe est 'vgcreate [nom] [PV]'[cite: 18, 807]."
+    },
+    {
+      "id": 52,
+      "theme": "Sécurité",
+      "question": "Où se trouvent les fichiers de configuration de Fail2ban (jails) ?",
+      "options": ["/etc/fail2ban/jail.conf", "/var/lib/fail2ban", "/etc/ssh/fail2ban", "/usr/share/fail2ban"],
+      "answer": "/etc/fail2ban/jail.conf",
+      "explanation": "Ce fichier définit les services à surveiller et les actions de bannissement[cite: 31, 989]."
+    },
+    {
+      "id": 53,
+      "theme": "Scripting Bash",
+      "question": "Dans une boucle 'for file in *', que représente '*' ?",
+      "options": ["Tous les fichiers du répertoire courant", "Seulement les fichiers cachés", "Uniquement les dossiers", "Une erreur de syntaxe"],
+      "answer": "Tous les fichiers du répertoire courant",
+      "explanation": "L'astérisque est un caractère générique (wildcard) qui s'étend à tous les noms de fichiers[cite: 1016]."
+    },
+    {
+      "id": 54,
+      "theme": "Maintenance",
+      "question": "Quelle commande affiche la version du noyau Linux actuellement utilisé ?",
+      "options": ["kernel -v", "uname -r", "cat /etc/os-release", "ls /boot"],
+      "answer": "uname -r",
+      "explanation": "Uname (Unix Name) avec l'option -r (release) donne la version exacte[cite: 41, 761, 847]."
+    },
+    {
+      "id": 55,
+      "theme": "Permissions",
+      "question": "Comment donner les droits d'exécution à tout le monde sur un script 'backup.sh' ?",
+      "options": ["chmod 644 backup.sh", "chmod +x backup.sh", "chown root backup.sh", "chmod 444 backup.sh"],
+      "answer": "chmod +x backup.sh",
+      "explanation": "'+x' ajoute le droit d'exécution aux trois catégories d'utilisateurs[cite: 736, 762]."
+    },
+    {
+      "id": 56,
+      "theme": "Utilisateurs",
+      "question": "Comment forcer un utilisateur à changer son mot de passe à la prochaine connexion ?",
+      "options": ["passwd -d utilisateur", "chage -d 0 utilisateur", "usermod -L utilisateur", "userdel -f utilisateur"],
+      "answer": "chage -d 0 utilisateur",
+      "explanation": "Régler la date du dernier changement à 0 (1er janvier 1970) déclenche l'expiration immédiate[cite: 14]."
+    },
+    {
+      "id": 57,
+      "theme": "Installation Gentoo",
+      "question": "Que signifie l'option '-avuDN' utilisée avec 'emerge' ?",
+      "options": ["Installer une interface graphique", "Mise à jour profonde du système en demandant confirmation", "Supprimer tous les paquets inutiles", "Vérifier l'intégrité du disque dur"],
+      "answer": "Mise à jour profonde du système en demandant confirmation",
+      "explanation": "C'est la commande standard pour maintenir Gentoo à jour (ask, verbose, update, deep, newuse)[cite: 338]."
+    },
+    {
+      "id": 58,
+      "theme": "Réseau",
+      "question": "Quel outil permet de modifier les paramètres réseau de manière interactive sur les distributions type RedHat/CentOS ?",
+      "options": ["nmtui", "ifconfig", "ip link", "net-setup"],
+      "answer": "nmtui",
+      "explanation": "NetworkManager Text User Interface est l'outil visuel en console."
+    },
+    {
+      "id": 59,
+      "theme": "Gestion du Stockage",
+      "question": "Comment créer un système de fichiers ext4 sur la partition '/dev/sdb1' ?",
+      "options": ["format /dev/sdb1", "mkfs.ext4 /dev/sdb1", "fdisk --type ext4", "mount -t ext4"],
+      "answer": "mkfs.ext4 /dev/sdb1",
+      "explanation": "La famille de commandes mkfs (Make File System) initialise les partitions[cite: 257, 775]."
+    },
+    {
+      "id": 60,
+      "theme": "Sauvegarde",
+      "question": "Dans une crontab, que signifie le symbole '*' dans les champs de temps ?",
+      "options": ["Zéro", "Toutes les valeurs possibles (chaque minute, jour, etc.)", "Seulement le week-end", "Une valeur aléatoire"],
+      "answer": "Toutes les valeurs possibles (chaque minute, jour, etc.)",
+      "explanation": "L'astérisque agit comme un joker temporel[cite: 26, 1058]."
+    },
+    {
+      "id": 61,
+      "theme": "Permissions",
+      "question": "Quelle commande permet de trouver tous les fichiers appartenant à l'utilisateur 'tux' ?",
+      "options": ["ls -u tux", "find / -user tux", "grep tux /etc/passwd", "locate tux"],
+      "answer": "find / -user tux",
+      "explanation": "Find est l'outil le plus puissant pour filtrer par attributs de fichiers[cite: 749, 755]."
+    },
+    {
+      "id": 62,
+      "theme": "Arborescence",
+      "question": "Où sont montés traditionnellement les périphériques amovibles (clés USB, CD) ?",
+      "options": ["/mnt ou /media", "/dev", "/root", "/proc"],
+      "answer": "/mnt ou /media",
+      "explanation": "Ces répertoires servent de points de montage temporaires ou externes[cite: 261, 776]."
+    },
+    {
+      "id": 63,
+      "theme": "Sécurité",
+      "question": "Quelle commande permet de voir les IP actuellement bannies par Fail2ban pour le service SSH ?",
+      "options": ["fail2ban-client status sshd", "iptables -L", "cat /var/log/fail2ban.log", "ufw status"],
+      "answer": "fail2ban-client status sshd",
+      "explanation": "Le client fail2ban permet d'interroger l'état des 'jails'[cite: 33, 991]."
+    },
+    {
+      "id": 64,
+      "theme": "Scripting Bash",
+      "question": "Comment exécuter un script Bash 'test.sh' même s'il n'a pas les droits d'exécution ?",
+      "options": ["run test.sh", "./test.sh", "bash test.sh", "exec test.sh"],
+      "answer": "bash test.sh",
+      "explanation": "En passant le fichier en argument à l'interpréteur bash, le bit d'exécution n'est pas requis."
+    },
+    {
+      "id": 65,
+      "theme": "Maintenance",
+      "question": "Que signifie un 'Load Average' élevé dans la commande 'top' ?",
+      "options": ["Le disque dur est plein", "Le système est surchargé (processus en attente de CPU)", "La connexion internet est lente", "Le ventilateur tourne trop vite"],
+      "answer": "Le système est surchargé (processus en attente de CPU)",
+      "explanation": "Le Load Average mesure la file d'attente des processus pour les ressources système[cite: 42, 979]."
+    },
+    {
+      "id": 66,
+      "theme": "Gestion du Stockage",
+      "question": "Quelle commande permet de démonter proprement la partition située sur '/mnt/data' ?",
+      "options": ["rmount /mnt/data", "umount /mnt/data", "delete mount /mnt/data", "eject /mnt/data"],
+      "answer": "umount /mnt/data",
+      "explanation": "Attention à l'orthographe : 'umount' (sans le 'n' de unmount)[cite: 663]."
+    },
+    {
+      "id": 67,
+      "theme": "Installation Gentoo",
+      "question": "Quel fichier contient la liste des partitions à monter au démarrage de Gentoo ?",
+      "options": ["/etc/fstab", "/boot/grub/grub.cfg", "/etc/conf.d/net", "/etc/mtab"],
+      "answer": "/etc/fstab",
+      "explanation": "Comme sur la plupart des distributions, fstab gère la table des partitions[cite: 481, 795]."
+    },
+    {
+      "id": 68,
+      "theme": "Réseau",
+      "question": "Comment obtenir une adresse IP automatiquement via le protocole DHCP ?",
+      "options": ["ip set dhcp", "dhcpcd enp0s3", "ifconfig dhcp on", "net-start"],
+      "answer": "dhcpcd enp0s3",
+      "explanation": "dhcpcd est le client démon qui demande l'adresse au routeur[cite: 186, 572]."
+    },
+    {
+      "id": 69,
+      "theme": "Permissions",
+      "question": "Que fait la commande 'chmod 1777 /tmp' (le 1 au début) ?",
+      "options": ["Elle interdit l'accès à root", "Elle active le 'Sticky Bit' (seul le proprio peut supprimer son fichier)", "Elle rend le dossier invisible", "Elle compresse le dossier"],
+      "answer": "Elle active le 'Sticky Bit' (seul le proprio peut supprimer son fichier)",
+      "explanation": "C'est une sécurité essentielle pour les dossiers partagés comme /tmp[cite: 739]."
+    },
+    {
+      "id": 70,
+      "theme": "Utilisateurs",
+      "question": "Comment supprimer un utilisateur et son répertoire personnel simultanément ?",
+      "options": ["userdel utilisateur", "userdel -r utilisateur", "rmuser -all utilisateur", "deluser --home utilisateur"],
+      "answer": "userdel -r utilisateur",
+      "explanation": "L'option -r (recursive) supprime le dossier /home de l'utilisateur[cite: 880]."
+    },
+    {
+      "id": 71,
+      "theme": "Sauvegarde",
+      "question": "Quelle commande permet d'extraire une archive 'backup.tar.gz' ?",
+      "options": ["tar -cvf backup.tar.gz", "tar -xzvf backup.tar.gz", "unzip backup.tar.gz", "extract backup.tar.gz"],
+      "answer": "tar -xzvf backup.tar.gz",
+      "explanation": "-x pour extract, -z pour gzip[cite: 1054, 1062]."
+    },
+    {
+      "id": 72,
+      "theme": "Sécurité",
+      "question": "Que fait la commande 'ufw default deny incoming' ?",
+      "options": ["Elle autorise tout par défaut", "Elle bloque toutes les connexions entrantes non explicitement autorisées", "Elle éteint le firewall", "Elle déconnecte internet"],
+      "answer": "Elle bloque toutes les connexions entrantes non explicitement autorisées",
+      "explanation": "C'est la base d'une politique de sécurité 'moindre privilège'[cite: 916]."
+    },
+    {
+      "id": 73,
+      "theme": "Installation Gentoo",
+      "question": "Dans Gentoo, à quoi sert 'dispatch-conf' ?",
+      "options": ["À envoyer des emails", "À gérer les mises à jour des fichiers de configuration", "À compiler le noyau", "À installer GRUB"],
+      "answer": "À gérer les mises à jour des fichiers de configuration",
+      "explanation": "Il permet de fusionner proprement les changements après une mise à jour de paquets."
+    },
+    {
+      "id": 74,
+      "theme": "Maintenance",
+      "question": "Comment voir les 20 dernières lignes d'un fichier de log en continu ?",
+      "options": ["cat -n 20 /var/log/syslog", "tail -f -n 20 /var/log/syslog", "head -20 /var/log/syslog", "watch /var/log/syslog"],
+      "answer": "tail -f -n 20 /var/log/syslog",
+      "explanation": "-f (follow) permet de voir les nouvelles lignes s'ajouter en direct[cite: 826]."
+    },
+    {
+      "id": 75,
+      "theme": "Réseau",
+      "question": "Quel fichier contient les adresses des serveurs DNS (résolution de noms) ?",
+      "options": ["/etc/hosts", "/etc/resolv.conf", "/etc/hostname", "/etc/networks"],
+      "answer": "/etc/resolv.conf",
+      "explanation": "Ce fichier indique au système quel serveur interroger pour transformer un nom en IP[cite: 323, 324]."
+    },
+    {
+      "id": 76,
+      "theme": "Gestion du Stockage",
+      "question": "Que signifie 'LVM' ?",
+      "options": ["Linux Virtual Machine", "Logical Volume Management", "Local Volume Monitor", "Lightweight Version Manager"],
+      "answer": "Logical Volume Management",
+      "explanation": "C'est la couche logicielle de gestion souple des disques[cite: 15, 802]."
+    },
+    {
+      "id": 77,
+      "theme": "Scripting Bash",
+      "question": "Comment concaténer le contenu de deux fichiers 'a.txt' et 'b.txt' dans un troisième 'c.txt' ?",
+      "options": ["cat a.txt b.txt > c.txt", "cp a.txt + b.txt c.txt", "merge a.txt b.txt c.txt", "cat c.txt < a.txt b.txt"],
+      "answer": "cat a.txt b.txt > c.txt",
+      "explanation": "Cat lit les fichiers bout à bout et la redirection '>' envoie le flux dans le fichier de destination."
+    },
+    {
+      "id": 78,
+      "theme": "Arborescence",
+      "question": "Où se trouve le répertoire personnel de l'utilisateur root ?",
+      "options": ["/home/root", "/root", "/bin/root", "/etc/root"],
+      "answer": "/root",
+      "explanation": "Pour des raisons de sécurité et de montage, root a son propre dossier à la racine[cite: 158]."
+    },
+    {
+      "id": 79,
+      "theme": "Sécurité",
+      "question": "Quelle commande permet de scanner les ports ouverts d'une machine distante ?",
+      "options": ["nmap", "ping", "ssh-scan", "netstat"],
+      "answer": "nmap",
+      "explanation": "Nmap (Network Mapper) est l'outil de référence pour l'audit réseau."
+    },
+    {
+      "id": 80,
+      "theme": "Gestion des Paquets",
+      "question": "Sur Gentoo, comment chercher un paquet contenant le mot 'web' ?",
+      "options": ["apt search web", "emerge --search web", "pacman -Ss web", "find / -name web"],
+      "answer": "emerge --search web",
+      "explanation": "L'option --search (ou -s) interroge l'arbre Portage[cite: 570]."
+    },
+    {
+      "id": 81,
+      "theme": "Maintenance",
+      "question": "Comment vérifier l'utilisation de l'espace SWAP ?",
+      "options": ["df -h", "swapon --show", "free -m", "Les deux réponses B et C sont correctes"],
+      "answer": "Les deux réponses B et C sont correctes",
+      "explanation": "Les deux commandes fournissent des informations sur l'état du swap[cite: 852]."
+    },
+    {
+      "id": 82,
+      "theme": "Installation Gentoo",
+      "question": "À quoi sert la commande 'env-update && source /etc/profile' ?",
+      "options": ["À mettre à jour les variables d'environnement après un changement", "À redémarrer l'ordinateur", "À installer les pilotes graphiques", "À vider la corbeille"],
+      "answer": "À mettre à jour les variables d'environnement après un changement",
+      "explanation": "C'est nécessaire pour que le shell prenne en compte les nouveaux réglages sans se reconnecter[cite: 331, 455]."
+    },
+    {
+      "id": 83,
+      "theme": "Réseau",
+      "question": "Quel protocole permet de transférer des fichiers de manière sécurisée via SSH ?",
+      "options": ["FTP", "HTTP", "SCP / SFTP", "Telnet"],
+      "answer": "SCP / SFTP",
+      "explanation": "Ces protocoles utilisent le tunnel chiffré de SSH pour le transfert[cite: 187, 867]."
+    },
+    {
+      "id": 84,
+      "theme": "Permissions",
+      "question": "Comment réinitialiser les droits d'un dossier pour que seul le propriétaire puisse tout faire (rwx) ?",
+      "options": ["chmod 700 dossier", "chmod 777 dossier", "chmod 007 dossier", "chmod 755 dossier"],
+      "answer": "chmod 700 dossier",
+      "explanation": "7 (rwx) pour user, 0 (---) pour group, 0 (---) pour others[cite: 741, 894]."
+    },
+    {
+      "id": 85,
+      "theme": "Utilisateurs",
+      "question": "Quelle commande permet de changer temporairement d'identité pour devenir root ?",
+      "options": ["sudo", "su -", "login root", "Les deux réponses A et B sont correctes"],
+      "answer": "Les deux réponses A et B sont correctes",
+      "explanation": "Sudo exécute une commande, su - ouvre une session complète en tant que root[cite: 868]."
+    },
+    {
+      "id": 86,
+      "theme": "Sauvegarde",
+      "question": "Quelle est la différence entre une sauvegarde complète et incrémentale ?",
+      "options": ["L'incrémentale ne sauvegarde que ce qui a changé depuis la dernière fois", "La complète est plus rapide", "L'incrémentale utilise plus de place", "Il n'y a pas de différence"],
+      "answer": "L'incrémentale ne sauvegarde que ce qui a changé depuis la dernière fois",
+      "explanation": "Cela permet de gagner du temps et de l'espace disque[cite: 24, 1048]."
+    },
+    {
+      "id": 87,
+      "theme": "Sécurité",
+      "question": "Quelle commande permet de générer une paire de clés (publique/privée) pour SSH ?",
+      "options": ["ssh-keygen", "openssl gen", "crypt-setup", "ssh-add"],
+      "answer": "ssh-keygen",
+      "explanation": "C'est l'outil standard pour l'authentification par clé sans mot de passe[cite: 166, 188]."
+    },
+    {
+      "id": 88,
+      "theme": "Installation Gentoo",
+      "question": "Que signifie compiler un noyau 'minimaliste' ?",
+      "options": ["Il ne contient que les pilotes nécessaires au matériel spécifique de la machine", "C'est un noyau sans ligne de commande", "C'est un noyau pour les vieux ordinateurs uniquement", "Il est plus lent"],
+      "answer": "Il ne contient que les pilotes nécessaires au matériel spécifique de la machine",
+      "explanation": "Cela optimise les performances et la sécurité en réduisant la surface d'attaque[cite: 531]."
+    },
+    {
+      "id": 89,
+      "theme": "Maintenance",
+      "question": "Comment savoir quels fichiers sont ouverts par un processus ou un utilisateur ?",
+      "options": ["ls", "lsof", "ps", "top"],
+      "answer": "lsof",
+      "explanation": "lsof (LiSt Open Files) est extrêmement utile pour le débogage."
+    },
+    {
+      "id": 90,
+      "theme": "Gestion des Paquets",
+      "question": "Sur Gentoo, comment supprimer les paquets orphelins (dépendances inutiles) ?",
+      "options": ["emerge --depclean", "apt autoremove", "emerge --clean", "rm -rf /usr/portage"],
+      "answer": "emerge --depclean",
+      "explanation": "Cette commande nettoie le système des paquets qui ne sont plus requis[cite: 659]."
+    },
+    {
+      "id": 91,
+      "theme": "Réseau",
+      "question": "Quelle commande permet de voir les connexions réseau actives et les ports en écoute ?",
+      "options": ["netstat -tulpn", "ss -tulpn", "ifconfig", "Les deux réponses A et B sont correctes"],
+      "answer": "Les deux réponses A et B sont correctes",
+      "explanation": "Ss est le remplaçant moderne de netstat."
+    },
+    {
+      "id": 92,
+      "theme": "Scripting Bash",
+      "question": "Que fait la commande 'sleep 60' dans un script ?",
+      "options": ["Elle éteint l'ordinateur après 60 secondes", "Elle met le script en pause pendant 60 secondes", "Elle limite la vitesse du CPU à 60%", "Elle compte jusqu'à 60"],
+      "answer": "Elle met le script en pause pendant 60 secondes",
+      "explanation": "Utile pour attendre la fin d'un processus ou espacer des vérifications."
+    },
+    {
+      "id": 93,
+      "theme": "Permissions",
+      "question": "Quelle est la commande pour changer les droits d'un fichier en utilisant la méthode symbolique pour ajouter le droit d'écriture au groupe ?",
+      "options": ["chmod g+w fichier", "chmod group=write fichier", "chmod 777 fichier", "chmod u+w fichier"],
+      "answer": "chmod g+w fichier",
+      "explanation": "g (group), + (ajouter), w (write)[cite: 736]."
+    },
+    {
+      "id": 94,
+      "theme": "Arborescence",
+      "question": "Dans quel répertoire se trouvent les exécutables de base du système ?",
+      "options": ["/usr/bin ou /bin", "/etc", "/var/bin", "/tmp"],
+      "answer": "/usr/bin ou /bin",
+      "explanation": "C'est là que sont stockées les commandes comme ls, cp, etc[cite: 329, 641]."
+    },
+    {
+      "id": 95,
+      "theme": "Sécurité",
+      "question": "Que contient le fichier '/var/log/auth.log' ?",
+      "options": ["Les messages de démarrage du noyau", "Les tentatives de connexion et l'utilisation de sudo", "Les erreurs du serveur web", "La liste des fichiers supprimés"],
+      "answer": "Les tentatives de connexion et l'utilisation de sudo",
+      "explanation": "C'est le fichier clé pour surveiller les intrusions[cite: 970, 974]."
+    },
+    {
+      "id": 96,
+      "theme": "Installation Gentoo",
+      "question": "Comment configurer la disposition du clavier en 'fr' sur Gentoo console ?",
+      "options": ["En éditant /etc/conf.d/keymaps", "En tapant 'setxkbmap fr'", "Dans le BIOS", "C'est automatique"],
+      "answer": "En éditant /etc/conf.d/keymaps",
+      "explanation": "On y modifie la variable keymap='fr'[cite: 424, 431]."
+    },
+    {
+      "id": 97,
+      "theme": "Sauvegarde",
+      "question": "À quoi sert l'option '-n' dans la commande 'cron' ?",
+      "options": ["Elle n'existe pas, cron se configure via crontab -e", "À créer une nouvelle tâche", "À supprimer une tâche", "À nommer le script"],
+      "answer": "Elle n'existe pas, cron se configure via crontab -e",
+      "explanation": "L'édition de la table se fait toujours via l'outil crontab[cite: 26, 1058]."
+    },
+    {
+      "id": 98,
+      "theme": "Utilisateurs",
+      "question": "Quel est l'ID (UID) par défaut de l'utilisateur root ?",
+      "options": ["1000", "0", "1", "999"],
+      "answer": "0",
+      "explanation": "L'UID 0 est réservé au super-utilisateur[cite: 158]."
+    },
+    {
+      "id": 99,
+      "theme": "Gestion du Stockage",
+      "question": "Quelle commande permet de vérifier l'intégrité d'un système de fichiers (check disk) ?",
+      "options": ["fsck", "chkdsk", "disk-verify", "inspect"],
+      "answer": "fsck",
+      "explanation": "File System Consistency CheK est l'outil de réparation standard[cite: 19]."
+    },
+    {
+      "id": 100,
+      "theme": "Maintenance",
+      "question": "Comment vider le cache de la mémoire vive sans redémarrer (astuce avancée) ?",
+      "options": ["echo 3 > /proc/sys/vm/drop_caches", "free --clear", "ram-reset", "kill -9 1"],
+      "answer": "echo 3 > /proc/sys/vm/drop_caches",
+      "explanation": "Cette commande force le noyau à libérer les pages de cache non utilisées."
+    }
+  ]
+}
