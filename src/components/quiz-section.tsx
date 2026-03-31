@@ -17,6 +17,7 @@ type QuizQuestion = {
   options: string[]
   answer: string
   explanation: string
+  wrong_answers?: Record<string, string>
 }
 
 type QuizDataset = {
@@ -238,19 +239,31 @@ export function QuizSection() {
                 hasAnsweredCurrent && !isSelected && !isCorrect && "opacity-70"
               )
 
+              const wrongExplanation =
+                hasAnsweredCurrent && !isCorrect && currentQuestion.wrong_answers?.[option]
+
               return (
-                <Button
-                  key={`${currentQuestion.id}-${index}-${option}`}
-                  variant="outline"
-                  className={buttonClass}
-                  onClick={() => selectAnswer(index)}
-                  disabled={hasAnsweredCurrent}
-                >
-                  <span className="w-8 shrink-0 text-muted-foreground">{LETTERS[index]}.</span>
-                  <InlineValue value={option} />
-                  {hasAnsweredCurrent && isCorrect && <CheckCircle2 className="ml-auto size-5 text-green-600" />}
-                  {hasAnsweredCurrent && isSelected && !isCorrect && <XCircle className="ml-auto size-5 text-red-600" />}
-                </Button>
+                <div key={`${currentQuestion.id}-${index}-${option}`} className="space-y-1">
+                  <Button
+                    variant="outline"
+                    className={buttonClass}
+                    onClick={() => selectAnswer(index)}
+                    disabled={hasAnsweredCurrent}
+                  >
+                    <span className="w-8 shrink-0 text-muted-foreground">{LETTERS[index]}.</span>
+                    <InlineValue value={option} />
+                    {hasAnsweredCurrent && isCorrect && <CheckCircle2 className="ml-auto size-5 text-green-600" />}
+                    {hasAnsweredCurrent && isSelected && !isCorrect && <XCircle className="ml-auto size-5 text-red-600" />}
+                  </Button>
+                  {wrongExplanation && (
+                    <p className={cn(
+                      "ml-12 text-sm leading-relaxed",
+                      isSelected ? "text-red-600/80 dark:text-red-400/80" : "text-muted-foreground/70"
+                    )}>
+                      {wrongExplanation}
+                    </p>
+                  )}
+                </div>
               )
             })}
           </div>
