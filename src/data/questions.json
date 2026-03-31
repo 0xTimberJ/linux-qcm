@@ -4,7 +4,7 @@
     {
       "id": 1,
       "theme": "Installation & Gentoo",
-      "question": "Dans la procédure d'installation Gentoo, quelle commande permet de synchroniser l'horloge système avec l'horloge matérielle ?",
+      "question": "Dans la procédure d'installation Gentoo, quelle commande permet de synchroniser l'horloge matérielle à partir de l'horloge système ?",
       "options": [
         "date --sync",
         "hwclock --systohc",
@@ -12,7 +12,12 @@
         "ntpdate -u"
       ],
       "answer": "hwclock --systohc",
-      "explanation": "La commande hwclock --systohc est utilisée pour régler l'horloge matérielle à partir de l'horloge système[cite: 463]."
+      "explanation": "La commande hwclock --systohc est utilisée pour régler l'horloge matérielle à partir de l'horloge système[cite: 463].",
+      "wrong_answers": {
+        "date --sync": "Cette commande n'existe pas. 'date' permet d'afficher ou régler la date système, mais n'a pas d'option --sync.",
+        "timedatectl set-time": "Cette commande existe sous systemd pour régler la date/heure, mais Gentoo utilise OpenRC, pas systemd.",
+        "ntpdate -u": "ntpdate synchronise l'horloge via un serveur NTP distant, ce n'est pas une synchronisation locale entre horloge système et matérielle."
+      }
     },
     {
       "id": 2,
@@ -25,7 +30,12 @@
         "Partition Table"
       ],
       "answer": "Volume Group (VG)",
-      "explanation": "Le Volume Group (VG) est l'entité qui agrège un ou plusieurs Physical Volumes (PV)[cite: 18, 807]."
+      "explanation": "Le Volume Group (VG) est l'entité qui agrège un ou plusieurs Physical Volumes (PV)[cite: 18, 807].",
+      "wrong_answers": {
+        "Logical Volume (LV)": "Le LV est le volume logique créé à l'intérieur d'un VG. C'est l'équivalent d'une partition, pas du pool de stockage.",
+        "Physical Extent (PE)": "Le PE est la plus petite unité d'allocation dans LVM, pas un regroupement de disques.",
+        "Partition Table": "La table de partition est une structure bas niveau du disque (MBR/GPT), elle n'a rien à voir avec LVM."
+      }
     },
     {
       "id": 3,
@@ -38,7 +48,12 @@
         "770"
       ],
       "answer": "750",
-      "explanation": "7 (rwx) pour le proprio, 5 (r-x) pour le groupe, 0 (---) pour les autres[cite: 737]."
+      "explanation": "7 (rwx) pour le proprio, 5 (r-x) pour le groupe, 0 (---) pour les autres[cite: 737].",
+      "wrong_answers": {
+        "755": "755 donne rwx au propriétaire, r-x au groupe ET r-x aux autres. Ici on veut 0 (aucun droit) pour les autres.",
+        "640": "640 donne rw- au propriétaire (pas d'exécution), r-- au groupe (pas d'exécution), et rien aux autres.",
+        "770": "770 donne rwx au propriétaire ET au groupe, mais la question demande r-x (5) pour le groupe, pas rwx (7)."
+      }
     },
     {
       "id": 4,
@@ -51,7 +66,12 @@
         "$*"
       ],
       "answer": "$#",
-      "explanation": "$# renvoie le nombre total de paramètres positionnels[cite: 1015]."
+      "explanation": "$# renvoie le nombre total de paramètres positionnels[cite: 1015].",
+      "wrong_answers": {
+        "$@": "Piège : $@ contient la liste de tous les arguments (chaque argument séparé), pas leur nombre.",
+        "$?": "Piège : $? contient le code de retour de la dernière commande exécutée (0 = succès).",
+        "$*": "Piège : $* contient aussi tous les arguments, mais comme une seule chaîne de caractères."
+      }
     },
     {
       "id": 5,
@@ -64,7 +84,12 @@
         "CrowdSec"
       ],
       "answer": "Fail2ban",
-      "explanation": "Fail2ban est configuré spécifiquement pour surveiller les logs et bannir après X échecs[cite: 31, 994]."
+      "explanation": "Fail2ban est configuré spécifiquement pour surveiller les logs et bannir après X échecs[cite: 31, 994].",
+      "wrong_answers": {
+        "UFW": "UFW est un pare-feu simplifié pour gérer les règles iptables. Il bloque/autorise des ports mais ne surveille pas les logs.",
+        "IPtables": "IPtables gère les règles de filtrage réseau au niveau du noyau. Il peut limiter les connexions mais ne bannit pas automatiquement après des échecs.",
+        "CrowdSec": "Piège : CrowdSec fait un travail similaire à Fail2ban mais avec une approche communautaire. C'est une alternative valide, mais la question décrit le fonctionnement classique de Fail2ban."
+      }
     },
     {
       "id": 6,
@@ -77,7 +102,12 @@
         "/usr"
       ],
       "answer": "/etc",
-      "explanation": "Le répertoire /etc contient les fichiers de configuration du système[cite: 747]."
+      "explanation": "Le répertoire /etc contient les fichiers de configuration du système[cite: 747].",
+      "wrong_answers": {
+        "/var": "Piège : /var contient les données variables du système (logs, cache, spool), pas les fichiers de configuration.",
+        "/opt": "/opt est réservé aux logiciels tiers installés manuellement, pas à la configuration système.",
+        "/usr": "Piège : /usr contient les binaires, bibliothèques et ressources des programmes, pas la configuration globale."
+      }
     },
     {
       "id": 7,
@@ -90,7 +120,12 @@
         "fdisk -l"
       ],
       "answer": "pvcreate",
-      "explanation": "On transforme un disque ou une partition en PV avec pvcreate[cite: 805]."
+      "explanation": "On transforme un disque ou une partition en PV avec pvcreate[cite: 805].",
+      "wrong_answers": {
+        "vgcreate": "Piège : vgcreate sert à créer un Volume Group (VG), pas un Physical Volume.",
+        "mkfs.pv": "Cette commande n'existe pas. mkfs sert à créer des systèmes de fichiers (ext4, xfs...), pas des PV.",
+        "fdisk -l": "fdisk -l liste les partitions du disque, il ne crée rien."
+      }
     },
     {
       "id": 8,
@@ -103,7 +138,12 @@
         "sed 'failed' /var/log/auth.log"
       ],
       "answer": "cat /var/log/auth.log | grep failed",
-      "explanation": "Grep est l'outil standard pour filtrer des motifs dans des fichiers ou flux[cite: 973]."
+      "explanation": "Grep est l'outil standard pour filtrer des motifs dans des fichiers ou flux[cite: 973]. (Note : 'grep failed /var/log/auth.log' sans cat est plus idiomatique, mais les deux fonctionnent.)",
+      "wrong_answers": {
+        "find /var/log/auth.log -name failed": "find recherche des fichiers par nom dans l'arborescence, il ne filtre pas le contenu d'un fichier.",
+        "tail -f /var/log/auth.log": "Piège : tail -f affiche les dernières lignes en temps réel, mais ne filtre pas par motif.",
+        "sed 'failed' /var/log/auth.log": "La syntaxe sed est incorrecte. sed nécessite une commande (ex: sed -n '/failed/p'), pas juste un mot."
+      }
     },
     {
       "id": 9,
@@ -116,7 +156,12 @@
         "Uniquement le mardi à minuit"
       ],
       "answer": "Tous les jours à 2h du matin",
-      "explanation": "Le second champ représente les heures (2), le premier les minutes (0)[cite: 26, 1058]."
+      "explanation": "Le second champ représente les heures (2), le premier les minutes (0)[cite: 26, 1058].",
+      "wrong_answers": {
+        "Toutes les 2 minutes": "Confusion : le champ des minutes est 0 (= à la minute 0), pas */2 (toutes les 2 minutes).",
+        "Tous les 2 du mois à minuit": "Le 2 est dans le champ des heures, pas dans le champ du jour du mois (3e champ).",
+        "Uniquement le mardi à minuit": "Le mardi serait représenté par un 2 dans le 5e champ (jour de la semaine), pas dans le 2e champ."
+      }
     },
     {
       "id": 10,
@@ -129,7 +174,12 @@
         "C'est l'interface graphique par défaut"
       ],
       "answer": "C'est une archive contenant le système de base minimal",
-      "explanation": "Le stage3 contient les fichiers essentiels pour démarrer un environnement Gentoo[cite: 289]."
+      "explanation": "Le stage3 contient les fichiers essentiels pour démarrer un environnement Gentoo[cite: 289].",
+      "wrong_answers": {
+        "C'est le chargeur d'amorçage": "Le chargeur d'amorçage (bootloader) est GRUB, pas le stage3.",
+        "C'est le code source du noyau à compiler": "Le code source du noyau se télécharge séparément via emerge ou manuellement depuis kernel.org.",
+        "C'est l'interface graphique par défaut": "Gentoo n'installe pas d'interface graphique par défaut. L'environnement de bureau s'installe à part."
+      }
     },
     {
       "id": 11,
@@ -142,7 +192,12 @@
         "usermod -G restricted utilisateur"
       ],
       "answer": "useradd -s /bin/rbash utilisateur",
-      "explanation": "Le shell rbash (Restricted Bash) limite les commandes utilisables par l'utilisateur[cite: 11, 888]."
+      "explanation": "Le shell rbash (Restricted Bash) limite les commandes utilisables par l'utilisateur[cite: 11, 888].",
+      "wrong_answers": {
+        "passwd -l utilisateur": "Piège : passwd -l verrouille le compte (bloque la connexion), mais ne restreint pas les commandes disponibles.",
+        "chown -R root /home/utilisateur": "chown change le propriétaire des fichiers. Ça empêcherait l'utilisateur d'écrire chez lui, mais ne restreint pas le shell.",
+        "usermod -G restricted utilisateur": "usermod -G change les groupes d'un utilisateur. 'restricted' n'est pas un groupe standard qui limite le shell."
+      }
     },
     {
       "id": 12,
@@ -155,7 +210,12 @@
         "free -m"
       ],
       "answer": "top",
-      "explanation": "Top (ou htop) fournit une vue dynamique des processus actifs[cite: 979]."
+      "explanation": "Top (ou htop) fournit une vue dynamique des processus actifs[cite: 979].",
+      "wrong_answers": {
+        "ps aux": "Piège : ps aux affiche un instantané statique des processus, pas une vue en temps réel.",
+        "df -h": "df -h affiche l'utilisation de l'espace disque, pas les processus.",
+        "free -m": "free -m affiche l'utilisation de la mémoire RAM/Swap, pas les processus."
+      }
     },
     {
       "id": 13,
@@ -168,7 +228,12 @@
         "ping localhost"
       ],
       "answer": "ip a",
-      "explanation": "La commande 'ip address' (ou 'ip a') remplace l'ancien ifconfig[cite: 574]."
+      "explanation": "La commande 'ip address' (ou 'ip a') remplace l'ancien ifconfig[cite: 574].",
+      "wrong_answers": {
+        "ifconfig --set": "ifconfig est déprécié et l'option --set n'existe pas. ifconfig sans option affiche les interfaces, mais 'ip' le remplace.",
+        "netstat -rn": "Piège : netstat -rn affiche la table de routage, pas les adresses IP des interfaces.",
+        "ping localhost": "ping teste la connectivité réseau vers une adresse, il n'affiche pas la configuration des interfaces."
+      }
     },
     {
       "id": 14,
@@ -181,7 +246,12 @@
         "swap -a"
       ],
       "answer": "swapon /dev/sdaX",
-      "explanation": "On active l'espace d'échange avec swapon[cite: 279, 786]."
+      "explanation": "On active l'espace d'échange avec swapon[cite: 279, 786].",
+      "wrong_answers": {
+        "mount /dev/sdaX": "Piège : mount sert à monter un système de fichiers (ext4, etc.), pas une partition swap.",
+        "enable-swap /dev/sdaX": "Cette commande n'existe pas sous Linux.",
+        "swap -a": "Cette commande n'existe pas. swapon -a (avec 'on') active tous les swaps listés dans fstab."
+      }
     },
     {
       "id": 15,
@@ -194,7 +264,12 @@
         "variable NOM = stdin"
       ],
       "answer": "read NOM",
-      "explanation": "La commande read permet de capturer l'entrée standard[cite: 763, 883]."
+      "explanation": "La commande read permet de capturer l'entrée standard[cite: 763, 883].",
+      "wrong_answers": {
+        "get NOM": "La commande 'get' n'existe pas en Bash pour la saisie utilisateur.",
+        "input $NOM": "'input' n'est pas une commande Bash. C'est plutôt une fonction Python (input()).",
+        "variable NOM = stdin": "Cette syntaxe n'existe pas en Bash. En Bash, on assigne avec NOM=valeur (sans espaces)."
+      }
     },
     {
       "id": 16,
@@ -207,7 +282,12 @@
         "dpkg -L"
       ],
       "answer": "apt update",
-      "explanation": "Apt update télécharge les dernières informations des dépôts[cite: 948]."
+      "explanation": "Apt update télécharge les dernières informations des dépôts[cite: 948].",
+      "wrong_answers": {
+        "apt upgrade": "Piège : apt upgrade installe les mises à jour des paquets, mais ne rafraîchit pas la liste des paquets disponibles.",
+        "apt install list": "Syntaxe incorrecte. Cela tenterait d'installer un paquet appelé 'list'.",
+        "dpkg -L": "Piège : dpkg -L liste les fichiers installés par un paquet spécifique, ça ne met pas à jour les dépôts."
+      }
     },
     {
       "id": 17,
@@ -220,7 +300,12 @@
         "ufw permit --port 80"
       ],
       "answer": "ufw allow 80",
-      "explanation": "La syntaxe standard est 'ufw allow [port/service]'[cite: 911]."
+      "explanation": "La syntaxe standard est 'ufw allow [port/service]'[cite: 911].",
+      "wrong_answers": {
+        "ufw open http": "La sous-commande 'open' n'existe pas dans UFW. La syntaxe correcte utilise 'allow'.",
+        "ufw deny 80": "Piège : ufw deny 80 fait l'inverse — ça bloque le port 80 au lieu de l'autoriser.",
+        "ufw permit --port 80": "'permit' n'est pas une commande UFW valide. UFW utilise 'allow', 'deny' ou 'reject'."
+      }
     },
     {
       "id": 18,
@@ -233,7 +318,12 @@
         "Comparer deux fichiers"
       ],
       "answer": "Ajouter du contenu à la fin d'un fichier sans l'écraser",
-      "explanation": "L'opérateur de redirection >> concatène les données au fichier[cite: 33, 936]."
+      "explanation": "L'opérateur de redirection >> concatène les données au fichier[cite: 33, 936].",
+      "wrong_answers": {
+        "Écraser le contenu d'un fichier": "Piège : c'est '>' (simple chevron) qui écrase le contenu. '>>' ajoute à la fin sans écraser.",
+        "Lire le contenu d'un fichier": "Lire le contenu se fait avec '<' (redirection d'entrée) ou des commandes comme cat.",
+        "Comparer deux fichiers": "Comparer des fichiers se fait avec 'diff' ou 'cmp', pas avec des redirections."
+      }
     },
     {
       "id": 19,
@@ -246,7 +336,12 @@
         "dnf"
       ],
       "answer": "emerge",
-      "explanation": "Emerge est l'interface en ligne de commande pour le système Portage de Gentoo[cite: 336, 501]."
+      "explanation": "Emerge est l'interface en ligne de commande pour le système Portage de Gentoo[cite: 336, 501].",
+      "wrong_answers": {
+        "apt": "apt est le gestionnaire de paquets de Debian/Ubuntu, pas de Gentoo.",
+        "pacman": "pacman est le gestionnaire de paquets d'Arch Linux, pas de Gentoo.",
+        "dnf": "dnf est le gestionnaire de paquets de Fedora/RHEL, pas de Gentoo."
+      }
     },
     {
       "id": 20,
@@ -259,647 +354,1452 @@
         "-v"
       ],
       "answer": "-z",
-      "explanation": "L'option -z appelle gzip pour la compression[cite: 1027]."
+      "explanation": "L'option -z appelle gzip pour la compression[cite: 1027].",
+      "wrong_answers": {
+        "-c": "Piège : -c (create) sert à créer une archive, pas à la compresser.",
+        "-x": "Piège : -x (extract) sert à extraire une archive, pas à la compresser.",
+        "-v": "Piège : -v (verbose) active le mode détaillé pour afficher les fichiers traités."
+      }
     },
     {
-        "id": 21,
-        "theme": "Utilisateurs",
-        "question": "Quelle commande permet de changer le groupe propriétaire d'un fichier ?",
-        "options": ["chmod", "chown", "chgrp", "usermod"],
-        "answer": "chgrp",
-        "explanation": "chgrp (change group) est dédié à cette tâche, bien que chown puisse aussi le faire[cite: 736]."
+      "id": 21,
+      "theme": "Utilisateurs",
+      "question": "Quelle commande permet de changer le groupe propriétaire d'un fichier ?",
+      "options": [
+        "chmod",
+        "chown",
+        "chgrp",
+        "usermod"
+      ],
+      "answer": "chgrp",
+      "explanation": "chgrp (change group) est dédié à cette tâche, bien que chown puisse aussi le faire[cite: 736].",
+      "wrong_answers": {
+        "chmod": "Piège : chmod change les permissions (lecture, écriture, exécution), pas le groupe propriétaire.",
+        "chown": "Piège : chown peut changer le groupe (chown user:group), mais sa fonction principale est de changer le propriétaire.",
+        "usermod": "usermod modifie les propriétés d'un compte utilisateur, pas les attributs d'un fichier."
+      }
     },
     {
-        "id": 22,
-        "theme": "Maintenance",
-        "question": "Que fait la commande 'free -m' ?",
-        "options": ["Affiche l'espace disque en Mo", "Affiche la mémoire RAM et Swap en Mo", "Libère la mémoire cache", "Affiche les processus gratuits"],
-        "answer": "Affiche la mémoire RAM et Swap en Mo",
-        "explanation": "L'option -m affiche les valeurs en Megabytes[cite: 787, 982]."
+      "id": 22,
+      "theme": "Maintenance",
+      "question": "Que fait la commande 'free -m' ?",
+      "options": [
+        "Affiche l'espace disque en Mo",
+        "Affiche la mémoire RAM et Swap en Mo",
+        "Libère la mémoire cache",
+        "Affiche les processus gratuits"
+      ],
+      "answer": "Affiche la mémoire RAM et Swap en Mo",
+      "explanation": "L'option -m affiche les valeurs en Megabytes[cite: 787, 982].",
+      "wrong_answers": {
+        "Affiche l'espace disque en Mo": "Piège : c'est 'df -m' qui affiche l'espace disque. 'free' concerne la mémoire RAM.",
+        "Libère la mémoire cache": "'free' est une commande d'affichage uniquement, elle ne libère rien.",
+        "Affiche les processus gratuits": "Jeu de mots trompeur. 'free' signifie ici 'libre' (mémoire libre), pas 'gratuit'. Et ça n'affiche pas de processus."
+      }
     },
     {
-        "id": 23,
-        "theme": "Sécurité",
-        "question": "Quel fichier contient les hachages des mots de passe des utilisateurs ?",
-        "options": ["/etc/passwd", "/etc/shadow", "/etc/group", "/etc/gshadow"],
-        "answer": "/etc/shadow",
-        "explanation": "/etc/shadow est sécurisé et n'est lisible que par root[cite: 627]."
+      "id": 23,
+      "theme": "Sécurité",
+      "question": "Quel fichier contient les hachages des mots de passe des utilisateurs ?",
+      "options": [
+        "/etc/passwd",
+        "/etc/shadow",
+        "/etc/group",
+        "/etc/gshadow"
+      ],
+      "answer": "/etc/shadow",
+      "explanation": "/etc/shadow est sécurisé et n'est lisible que par root[cite: 627].",
+      "wrong_answers": {
+        "/etc/passwd": "Piège classique : /etc/passwd contient les infos des comptes (nom, UID, shell) mais plus les mots de passe depuis longtemps.",
+        "/etc/group": "/etc/group contient la liste des groupes du système, pas les mots de passe.",
+        "/etc/gshadow": "Piège : /etc/gshadow contient les mots de passe des groupes, pas ceux des utilisateurs."
+      }
     },
     {
-        "id": 24,
-        "theme": "Gestion du Stockage",
-        "question": "Comment lister tous les disques physiques détectés par le système ?",
-        "options": ["lsblk", "df -h", "cat /etc/fstab", "mount"],
-        "answer": "lsblk",
-        "explanation": "lsblk affiche la structure en blocs (disques et partitions)[cite: 773]."
+      "id": 24,
+      "theme": "Gestion du Stockage",
+      "question": "Comment lister tous les disques physiques détectés par le système ?",
+      "options": [
+        "lsblk",
+        "df -h",
+        "cat /etc/fstab",
+        "mount"
+      ],
+      "answer": "lsblk",
+      "explanation": "lsblk affiche la structure en blocs (disques et partitions)[cite: 773].",
+      "wrong_answers": {
+        "df -h": "Piège : df -h affiche l'espace utilisé/disponible par système de fichiers monté, pas la liste des disques physiques.",
+        "cat /etc/fstab": "Piège : fstab liste les partitions à monter au démarrage, mais pas tous les disques physiques détectés.",
+        "mount": "mount affiche les systèmes de fichiers actuellement montés, pas tous les disques détectés."
+      }
     },
     {
-        "id": 25,
-        "theme": "Scripting Bash",
-        "question": "Quelle est la première ligne indispensable d'un script Bash ?",
-        "options": ["#!/bin/sh", "#!/bin/bash", "# start script", "import bash"],
-        "answer": "#!/bin/bash",
-        "explanation": "Le 'shebang' indique au système quel interpréteur utiliser[cite: 329]."
+      "id": 25,
+      "theme": "Scripting Bash",
+      "question": "Quelle est la première ligne indispensable d'un script Bash ?",
+      "options": [
+        "#!/bin/sh",
+        "#!/bin/bash",
+        "# start script",
+        "import bash"
+      ],
+      "answer": "#!/bin/bash",
+      "explanation": "Le 'shebang' indique au système quel interpréteur utiliser[cite: 329].",
+      "wrong_answers": {
+        "#!/bin/sh": "Piège : #!/bin/sh invoque le shell POSIX (sh), pas spécifiquement Bash. Certaines fonctionnalités Bash ne seront pas disponibles.",
+        "# start script": "Un simple commentaire, pas un shebang. Le système ne saurait pas quel interpréteur utiliser.",
+        "import bash": "Syntaxe Python/Java. 'import' n'existe pas en Bash."
+      }
     },
     {
-        "id": 26,
-        "theme": "Installation Gentoo",
-        "question": "Quelle variable dans make.conf définit les drapeaux de compilation optimisés ?",
-        "options": ["USE", "COMMON_FLAGS", "MAKEOPTS", "VIDEO_CARDS"],
-        "answer": "COMMON_FLAGS",
-        "explanation": "COMMON_FLAGS regroupe les paramètres CFLAGS et CXXFLAGS[cite: 317]."
+      "id": 26,
+      "theme": "Installation Gentoo",
+      "question": "Quelle variable dans make.conf définit les drapeaux de compilation optimisés ?",
+      "options": [
+        "USE",
+        "COMMON_FLAGS",
+        "MAKEOPTS",
+        "VIDEO_CARDS"
+      ],
+      "answer": "COMMON_FLAGS",
+      "explanation": "COMMON_FLAGS regroupe les paramètres CFLAGS et CXXFLAGS[cite: 317].",
+      "wrong_answers": {
+        "USE": "Piège : USE définit les fonctionnalités optionnelles des paquets (support X11, audio, etc.), pas les flags de compilation.",
+        "MAKEOPTS": "Piège : MAKEOPTS définit les options de make, typiquement le nombre de jobs parallèles (-j4), pas les flags du compilateur.",
+        "VIDEO_CARDS": "VIDEO_CARDS spécifie les pilotes graphiques à compiler, c'est très spécifique et non lié à l'optimisation générale."
+      }
     },
     {
-        "id": 27,
-        "theme": "Réseau",
-        "question": "Comment redémarrer le service SSH sur un système utilisant OpenRC (comme Gentoo) ?",
-        "options": ["systemctl restart sshd", "/etc/init.d/sshd restart", "service ssh reload", "sshd --restart"],
-        "answer": "/etc/init.d/sshd restart",
-        "explanation": "Gentoo utilise OpenRC avec des scripts dans /etc/init.d/[cite: 166, 189]."
+      "id": 27,
+      "theme": "Réseau",
+      "question": "Comment redémarrer le service SSH sur un système utilisant OpenRC (comme Gentoo) ?",
+      "options": [
+        "systemctl restart sshd",
+        "/etc/init.d/sshd restart",
+        "service ssh reload",
+        "sshd --restart"
+      ],
+      "answer": "/etc/init.d/sshd restart",
+      "explanation": "Gentoo utilise OpenRC avec des scripts dans /etc/init.d/[cite: 166, 189].",
+      "wrong_answers": {
+        "systemctl restart sshd": "Piège : systemctl est la commande pour systemd. Gentoo utilise OpenRC, pas systemd.",
+        "service ssh reload": "'service' est un wrapper utilisé sur certaines distributions mais pas standard sur Gentoo. Et 'reload' recharge la config sans redémarrer.",
+        "sshd --restart": "sshd n'a pas d'option --restart. On gère les services via le système d'init, pas directement."
+      }
     },
     {
-        "id": 28,
-        "theme": "Permissions",
-        "question": "Que signifie le droit 'x' sur un répertoire ?",
-        "options": ["Droit de supprimer le répertoire", "Droit de traverser (entrer dans) le répertoire", "Droit de lister les fichiers", "Droit d'exécuter tous les fichiers dedans"],
-        "answer": "Droit de traverser (entrer dans) le répertoire",
-        "explanation": "Sans 'x', on ne peut pas faire un 'cd' dans le dossier[cite: 736]."
+      "id": 28,
+      "theme": "Permissions",
+      "question": "Que signifie le droit 'x' sur un répertoire ?",
+      "options": [
+        "Droit de supprimer le répertoire",
+        "Droit de traverser (entrer dans) le répertoire",
+        "Droit de lister les fichiers",
+        "Droit d'exécuter tous les fichiers dedans"
+      ],
+      "answer": "Droit de traverser (entrer dans) le répertoire",
+      "explanation": "Sans 'x', on ne peut pas faire un 'cd' dans le dossier[cite: 736].",
+      "wrong_answers": {
+        "Droit de supprimer le répertoire": "La suppression d'un répertoire dépend des droits du répertoire parent, pas du répertoire lui-même.",
+        "Droit de lister les fichiers": "Piège : c'est le droit 'r' (read) qui permet de lister le contenu d'un répertoire.",
+        "Droit d'exécuter tous les fichiers dedans": "Le droit x sur un répertoire ne donne pas le droit d'exécuter les fichiers qu'il contient. Chaque fichier a ses propres permissions."
+      }
     },
     {
-        "id": 29,
-        "theme": "Sécurité",
-        "question": "Quelle règle IPTables permet de limiter à 5 le nombre de connexions par minute sur le port 80 ?",
-        "options": ["-m limit --limit 5/m", "-p tcp --dport 80 --max 5", "ufw limit 80", "iptables --drop-fast"],
-        "answer": "-m limit --limit 5/m",
-        "explanation": "L'extension 'limit' d'IPTables gère le rate-limiting[cite: 928]."
+      "id": 29,
+      "theme": "Sécurité",
+      "question": "Quelle règle IPTables permet de limiter à 5 le nombre de connexions par minute sur le port 80 ?",
+      "options": [
+        "-m limit --limit 5/m",
+        "-p tcp --dport 80 --max 5",
+        "ufw limit 80",
+        "iptables --drop-fast"
+      ],
+      "answer": "-m limit --limit 5/m",
+      "explanation": "L'extension 'limit' d'IPTables gère le rate-limiting[cite: 928].",
+      "wrong_answers": {
+        "-p tcp --dport 80 --max 5": "L'option --max n'existe pas dans iptables. Le rate-limiting se fait avec le module 'limit'.",
+        "ufw limit 80": "Piège : cette commande UFW existe et fait du rate-limiting, mais la question porte sur IPTables spécifiquement.",
+        "iptables --drop-fast": "Cette option n'existe pas dans iptables."
+      }
     },
     {
-        "id": 30,
-        "theme": "Arborescence",
-        "question": "Où sont stockés les fichiers journaux (logs) du système ?",
-        "options": ["/etc/logs", "/usr/log", "/var/log", "/home/log"],
-        "answer": "/var/log",
-        "explanation": "/var/log est le standard pour les données variables comme les journaux[cite: 969]."
+      "id": 30,
+      "theme": "Arborescence",
+      "question": "Où sont stockés les fichiers journaux (logs) du système ?",
+      "options": [
+        "/etc/logs",
+        "/usr/log",
+        "/var/log",
+        "/home/log"
+      ],
+      "answer": "/var/log",
+      "explanation": "/var/log est le standard pour les données variables comme les journaux[cite: 969].",
+      "wrong_answers": {
+        "/etc/logs": "Ce répertoire n'existe pas dans la hiérarchie standard Linux. /etc contient la configuration.",
+        "/usr/log": "Ce répertoire n'existe pas. /usr contient les programmes et bibliothèques.",
+        "/home/log": "Ce répertoire n'existe pas. /home contient les répertoires personnels des utilisateurs."
+      }
     },
     {
       "id": 31,
       "theme": "Gestion du Stockage",
       "question": "Quelle commande permet de redimensionner un système de fichiers ext4 après avoir étendu un Logical Volume ?",
-      "options": ["resize2fs", "xfs_growfs", "lvresize --fs", "extend4fs"],
+      "options": [
+        "resize2fs",
+        "xfs_growfs",
+        "lvresize --fs",
+        "extend4fs"
+      ],
       "answer": "resize2fs",
-      "explanation": "resize2fs est l'outil spécifique pour ajuster la taille des systèmes de fichiers ext2/3/4[cite: 20, 816]."
+      "explanation": "resize2fs est l'outil spécifique pour ajuster la taille des systèmes de fichiers ext2/3/4[cite: 20, 816].",
+      "wrong_answers": {
+        "xfs_growfs": "Piège : xfs_growfs est l'équivalent mais pour les systèmes de fichiers XFS, pas ext4.",
+        "lvresize --fs": "Piège : lvresize --fs redimensionne le LV et le filesystem en une commande, mais la question demande l'outil spécifique pour ext4.",
+        "extend4fs": "Cette commande n'existe pas. C'est resize2fs l'outil correct."
+      }
     },
     {
       "id": 32,
       "theme": "Installation Gentoo",
       "question": "Dans le processus Gentoo, quel outil génère l'image initramfs pour le noyau ?",
-      "options": ["mkinitcpio", "dracut", "genkernel", "grub-mkconfig"],
+      "options": [
+        "mkinitcpio",
+        "dracut",
+        "genkernel",
+        "grub-mkconfig"
+      ],
       "answer": "dracut",
-      "explanation": "La procédure recommande l'utilisation de dracut pour préparer le démarrage du noyau[cite: 509, 510]."
+      "explanation": "La procédure recommande l'utilisation de dracut pour préparer le démarrage du noyau[cite: 509, 510].",
+      "wrong_answers": {
+        "mkinitcpio": "Piège : mkinitcpio est l'outil d'Arch Linux pour l'initramfs, pas celui de Gentoo.",
+        "genkernel": "Piège : genkernel est l'outil historique de Gentoo, mais la procédure du cours recommande dracut.",
+        "grub-mkconfig": "Piège : grub-mkconfig génère la configuration du bootloader GRUB, pas l'initramfs."
+      }
     },
     {
       "id": 33,
       "theme": "Permissions",
       "question": "Que permet de faire la commande 'chown -R user:group dossier' ?",
-      "options": ["Changer les droits en lecture seule", "Changer le propriétaire et le groupe de manière récursive", "Supprimer le dossier", "Masquer le dossier"],
+      "options": [
+        "Changer les droits en lecture seule",
+        "Changer le propriétaire et le groupe de manière récursive",
+        "Supprimer le dossier",
+        "Masquer le dossier"
+      ],
       "answer": "Changer le propriétaire et le groupe de manière récursive",
-      "explanation": "L'option -R applique le changement à tous les sous-fichiers et dossiers[cite: 1046]."
+      "explanation": "L'option -R applique le changement à tous les sous-fichiers et dossiers[cite: 1046].",
+      "wrong_answers": {
+        "Changer les droits en lecture seule": "Piège : changer les droits se fait avec chmod, pas chown. chown change le propriétaire.",
+        "Supprimer le dossier": "Supprimer un dossier se fait avec rm -r, pas chown.",
+        "Masquer le dossier": "Pour masquer un fichier sous Linux, on le préfixe d'un point (fichier caché). chown ne masque rien."
+      }
     },
     {
       "id": 34,
       "theme": "Sécurité",
       "question": "Quel est l'avantage principal de CrowdSec par rapport à Fail2ban ?",
-      "options": ["Il ne nécessite pas de firewall", "Il partage les adresses IP malveillantes avec une base communautaire", "Il est écrit en Bash", "Il ne surveille que le port 80"],
+      "options": [
+        "Il ne nécessite pas de firewall",
+        "Il partage les adresses IP malveillantes avec une base communautaire",
+        "Il est écrit en Bash",
+        "Il ne surveille que le port 80"
+      ],
       "answer": "Il partage les adresses IP malveillantes avec une base communautaire",
-      "explanation": "CrowdSec utilise une approche collaborative pour détecter les attaques."
+      "explanation": "CrowdSec utilise une approche collaborative pour détecter les attaques.",
+      "wrong_answers": {
+        "Il ne nécessite pas de firewall": "Faux : CrowdSec fonctionne avec un bouncer qui interagit avec le firewall (iptables, nftables...).",
+        "Il est écrit en Bash": "CrowdSec est écrit en Go, pas en Bash.",
+        "Il ne surveille que le port 80": "CrowdSec peut surveiller n'importe quel service (SSH, web, mail, etc.), pas seulement le port 80."
+      }
     },
     {
       "id": 35,
       "theme": "Maintenance",
       "question": "Comment identifier le processus qui consomme le plus de mémoire vive avec la commande 'ps' ?",
-      "options": ["ps aux --sort=-%mem", "ps -ef", "ps mem-max", "ps aux | grep ram"],
+      "options": [
+        "ps aux --sort=-%mem",
+        "ps -ef",
+        "ps mem-max",
+        "ps aux | grep ram"
+      ],
       "answer": "ps aux --sort=-%mem",
-      "explanation": "L'option --sort permet de classer les processus par ressource utilisée[cite: 978, 979]."
+      "explanation": "L'option --sort permet de classer les processus par ressource utilisée[cite: 978, 979].",
+      "wrong_answers": {
+        "ps -ef": "Piège : ps -ef affiche tous les processus mais sans tri par mémoire. Il faudrait ajouter --sort=-%mem.",
+        "ps mem-max": "Cette syntaxe n'existe pas pour la commande ps.",
+        "ps aux | grep ram": "Piège : grep ram chercherait le mot 'ram' dans la liste des processus, ça ne trie pas par consommation mémoire."
+      }
     },
     {
       "id": 36,
       "theme": "Réseau",
       "question": "Dans quel fichier configure-t-on le nom d'hôte de la machine sur une Debian/Ubuntu ?",
-      "options": ["/etc/network", "/etc/hostname", "/etc/hosts", "/etc/resolv.conf"],
+      "options": [
+        "/etc/network",
+        "/etc/hostname",
+        "/etc/hosts",
+        "/etc/resolv.conf"
+      ],
       "answer": "/etc/hostname",
-      "explanation": "Ce fichier contient le nom unique de la machine sur le réseau[cite: 567, 835]."
+      "explanation": "Ce fichier contient le nom unique de la machine sur le réseau[cite: 567, 835].",
+      "wrong_answers": {
+        "/etc/network": "Piège : /etc/network/ est un répertoire (pas un fichier) contenant la config réseau sur Debian, pas le hostname.",
+        "/etc/hosts": "Piège : /etc/hosts associe des noms d'hôte à des adresses IP (résolution locale), mais ne définit pas le nom de la machine.",
+        "/etc/resolv.conf": "Piège : /etc/resolv.conf contient les serveurs DNS, pas le nom d'hôte de la machine."
+      }
     },
     {
       "id": 37,
       "theme": "Scripting Bash",
       "question": "Comment vérifier le code de retour de la dernière commande exécutée ?",
-      "options": ["echo $!", "echo $?", "echo $#", "echo $$"],
+      "options": [
+        "echo $!",
+        "echo $?",
+        "echo $#",
+        "echo $$"
+      ],
       "answer": "echo $?",
-      "explanation": "$? contient 0 si la commande a réussi, ou une autre valeur en cas d'erreur."
+      "explanation": "$? contient 0 si la commande a réussi, ou une autre valeur en cas d'erreur.",
+      "wrong_answers": {
+        "echo $!": "Piège : $! contient le PID du dernier processus lancé en arrière-plan, pas le code de retour.",
+        "echo $#": "Piège : $# contient le nombre d'arguments passés au script, pas le code de retour.",
+        "echo $$": "Piège : $$ contient le PID du shell courant, pas le code de retour."
+      }
     },
     {
       "id": 38,
       "theme": "Gestion du Stockage",
       "question": "Que signifie l'option 'defaults' dans le fichier /etc/fstab ?",
-      "options": ["Utiliser les réglages recommandés (rw, suid, dev, exec, auto, nouser, async)", "Le disque est formaté en FAT32", "Le montage est temporaire", "Le disque sera ignoré au démarrage"],
+      "options": [
+        "Utiliser les réglages recommandés (rw, suid, dev, exec, auto, nouser, async)",
+        "Le disque est formaté en FAT32",
+        "Le montage est temporaire",
+        "Le disque sera ignoré au démarrage"
+      ],
       "answer": "Utiliser les réglages recommandés (rw, suid, dev, exec, auto, nouser, async)",
-      "explanation": "C'est un raccourci pour les options de montage les plus courantes[cite: 485]."
+      "explanation": "C'est un raccourci pour les options de montage les plus courantes[cite: 485].",
+      "wrong_answers": {
+        "Le disque est formaté en FAT32": "Le type de système de fichiers est défini dans un autre champ de fstab, pas par l'option 'defaults'.",
+        "Le montage est temporaire": "Le montage temporaire serait défini par l'option 'noauto'. 'defaults' inclut 'auto' (montage au démarrage).",
+        "Le disque sera ignoré au démarrage": "C'est l'inverse : 'defaults' inclut 'auto', donc le disque SERA monté au démarrage."
+      }
     },
     {
       "id": 39,
       "theme": "Sauvegarde",
       "question": "Quelle option de 'rsync' permet de supprimer les fichiers dans la destination s'ils n'existent plus dans la source ?",
-      "options": ["--remove", "--delete", "--sync", "--clean"],
+      "options": [
+        "--remove",
+        "--delete",
+        "--sync",
+        "--clean"
+      ],
       "answer": "--delete",
-      "explanation": "--delete assure une synchronisation miroir exacte[cite: 1049]."
+      "explanation": "--delete assure une synchronisation miroir exacte[cite: 1049].",
+      "wrong_answers": {
+        "--remove": "Cette option n'existe pas dans rsync.",
+        "--sync": "Cette option n'existe pas dans rsync. rsync fait de la synchronisation par défaut.",
+        "--clean": "Cette option n'existe pas dans rsync."
+      }
     },
     {
       "id": 40,
       "theme": "Utilisateurs",
       "question": "Quelle commande permet d'ajouter un utilisateur existant à un groupe supplémentaire sans supprimer ses groupes actuels ?",
-      "options": ["usermod -G", "usermod -aG", "useradd -g", "groupadd -u"],
+      "options": [
+        "usermod -G",
+        "usermod -aG",
+        "useradd -g",
+        "groupadd -u"
+      ],
       "answer": "usermod -aG",
-      "explanation": "L'option -a (append) est cruciale pour ne pas écraser l'appartenance aux autres groupes[cite: 641]."
+      "explanation": "L'option -a (append) est cruciale pour ne pas écraser l'appartenance aux autres groupes[cite: 641].",
+      "wrong_answers": {
+        "usermod -G": "Piège classique : sans -a, l'option -G REMPLACE tous les groupes secondaires au lieu d'en ajouter un. Erreur très dangereuse !",
+        "useradd -g": "Piège : useradd crée un nouvel utilisateur. -g définit le groupe primaire. Ça ne modifie pas un utilisateur existant.",
+        "groupadd -u": "groupadd crée un nouveau groupe. L'option -u n'existe pas pour groupadd."
+      }
     },
     {
       "id": 41,
       "theme": "Installation Gentoo",
       "question": "Que fait la commande 'eselect profile list' ?",
-      "options": ["Elle liste les utilisateurs connectés", "Elle liste les configurations système prédéfinies disponibles", "Elle affiche la vitesse du processeur", "Elle configure la carte graphique"],
+      "options": [
+        "Elle liste les utilisateurs connectés",
+        "Elle liste les configurations système prédéfinies disponibles",
+        "Elle affiche la vitesse du processeur",
+        "Elle configure la carte graphique"
+      ],
       "answer": "Elle liste les configurations système prédéfinies disponibles",
-      "explanation": "Les profils définissent les réglages par défaut pour tout le système Gentoo[cite: 389, 523]."
+      "explanation": "Les profils définissent les réglages par défaut pour tout le système Gentoo[cite: 389, 523].",
+      "wrong_answers": {
+        "Elle liste les utilisateurs connectés": "Lister les utilisateurs connectés se fait avec 'who' ou 'w', pas eselect.",
+        "Elle affiche la vitesse du processeur": "Les infos CPU sont dans /proc/cpuinfo ou via lscpu, pas eselect.",
+        "Elle configure la carte graphique": "eselect peut gérer les implémentations OpenGL, mais 'eselect profile' concerne les profils système, pas la carte graphique."
+      }
     },
     {
       "id": 42,
       "theme": "Maintenance",
       "question": "Quelle commande permet de tuer un processus en utilisant son nom au lieu de son PID ?",
-      "options": ["kill", "pkill", "stop", "rmproc"],
+      "options": [
+        "kill",
+        "pkill",
+        "stop",
+        "rmproc"
+      ],
       "answer": "pkill",
-      "explanation": "pkill (ou killall) permet de cibler des processus par leur nom[cite: 980]."
+      "explanation": "pkill (ou killall) permet de cibler des processus par leur nom[cite: 980].",
+      "wrong_answers": {
+        "kill": "Piège : kill nécessite un PID (numéro de processus), pas un nom. Il faut d'abord trouver le PID avec ps ou pidof.",
+        "stop": "'stop' n'est pas une commande standard pour tuer des processus sous Linux.",
+        "rmproc": "Cette commande n'existe pas sous Linux."
+      }
     },
     {
       "id": 43,
       "theme": "Réseau",
       "question": "Quel port est utilisé par défaut par le protocole HTTPS ?",
-      "options": ["80", "22", "443", "3306"],
+      "options": [
+        "80",
+        "22",
+        "443",
+        "3306"
+      ],
       "answer": "443",
-      "explanation": "Le port 443 est le standard pour le trafic web sécurisé[cite: 912]."
+      "explanation": "Le port 443 est le standard pour le trafic web sécurisé[cite: 912].",
+      "wrong_answers": {
+        "80": "Piège classique : le port 80 est celui de HTTP (non sécurisé), pas HTTPS.",
+        "22": "Piège : le port 22 est celui de SSH (connexion distante sécurisée).",
+        "3306": "Piège : le port 3306 est celui de MySQL/MariaDB (base de données)."
+      }
     },
     {
       "id": 44,
       "theme": "Scripting Bash",
       "question": "Comment déclarer un tableau en Bash ?",
-      "options": ["array=(val1 val2)", "list = [val1, val2]", "set array val1 val2", "declare array"],
+      "options": [
+        "array=(val1 val2)",
+        "list = [val1, val2]",
+        "set array val1 val2",
+        "declare array"
+      ],
       "answer": "array=(val1 val2)",
-      "explanation": "Les parenthèses sont utilisées pour définir des listes d'éléments en Bash."
+      "explanation": "Les parenthèses sont utilisées pour définir des listes d'éléments en Bash.",
+      "wrong_answers": {
+        "list = [val1, val2]": "Syntaxe Python, pas Bash. Les crochets et virgules ne sont pas utilisés pour les tableaux en Bash.",
+        "set array val1 val2": "'set' modifie les paramètres positionnels du shell, ce n'est pas la façon de déclarer un tableau.",
+        "declare array": "'declare array' sans -a ne crée pas un tableau. Il faudrait 'declare -a array=(val1 val2)'."
+      }
     },
     {
       "id": 45,
       "theme": "Gestion du Stockage",
       "question": "Quelle commande affiche l'utilisation de l'espace disque de manière lisible pour un humain (Go, Mo) ?",
-      "options": ["df -h", "ls -l", "du -s", "fdisk -v"],
+      "options": [
+        "df -h",
+        "ls -l",
+        "du -s",
+        "fdisk -v"
+      ],
       "answer": "df -h",
-      "explanation": "-h signifie 'human-readable'[cite: 816, 848]."
+      "explanation": "-h signifie 'human-readable'[cite: 816, 848].",
+      "wrong_answers": {
+        "ls -l": "ls -l affiche les détails des fichiers (permissions, taille), pas l'espace disque global.",
+        "du -s": "Piège : du -s affiche la taille d'un répertoire spécifique, pas l'utilisation globale de toutes les partitions.",
+        "fdisk -v": "fdisk -v affiche la version de fdisk, pas l'utilisation de l'espace disque."
+      }
     },
     {
       "id": 46,
       "theme": "Sécurité",
       "question": "Dans UFW, quelle est la différence entre 'REJECT' et 'DROP' ?",
-      "options": ["Il n'y a aucune différence", "DROP ignore le paquet, REJECT renvoie une erreur à l'expéditeur", "REJECT est plus lent", "DROP est réservé aux ports USB"],
+      "options": [
+        "Il n'y a aucune différence",
+        "DROP ignore le paquet, REJECT renvoie une erreur à l'expéditeur",
+        "REJECT est plus lent",
+        "DROP est réservé aux ports USB"
+      ],
       "answer": "DROP ignore le paquet, REJECT renvoie une erreur à l'expéditeur",
-      "explanation": "DROP est souvent préféré pour ne pas confirmer l'existence d'un serveur aux scanners."
+      "explanation": "DROP est souvent préféré pour ne pas confirmer l'existence d'un serveur aux scanners.",
+      "wrong_answers": {
+        "Il n'y a aucune différence": "Faux : DROP et REJECT ont un comportement réseau très différent vis-à-vis de l'expéditeur.",
+        "REJECT est plus lent": "Ce n'est pas une question de vitesse mais de réponse envoyée à l'expéditeur.",
+        "DROP est réservé aux ports USB": "Sans rapport. DROP est une action réseau du firewall, ça n'a rien à voir avec les ports USB."
+      }
     },
     {
       "id": 47,
       "theme": "Installation Gentoo",
       "question": "Comment quitter l'environnement 'chroot' ?",
-      "options": ["quit", "exit", "shutdown", "umount"],
+      "options": [
+        "quit",
+        "exit",
+        "shutdown",
+        "umount"
+      ],
       "answer": "exit",
-      "explanation": "La commande exit met fin au shell actuel et revient au système hôte (Live CD)[cite: 657]."
+      "explanation": "La commande exit met fin au shell actuel et revient au système hôte (Live CD)[cite: 657].",
+      "wrong_answers": {
+        "quit": "'quit' n'est pas une commande shell standard. C'est 'exit' qui ferme le shell courant.",
+        "shutdown": "shutdown éteint ou redémarre la machine entière, il ne quitte pas le chroot.",
+        "umount": "Piège : umount démonte des partitions. C'est une étape à faire APRÈS avoir quitté le chroot, pas pour en sortir."
+      }
     },
     {
       "id": 48,
       "theme": "Sauvegarde",
       "question": "À quoi sert l'option '-p' lors d'une copie avec 'cp' ou 'tar' ?",
-      "options": ["À afficher la progression", "À préserver les permissions et attributs d'origine", "À compresser les données", "À protéger le fichier par mot de passe"],
+      "options": [
+        "À afficher la progression",
+        "À préserver les permissions et attributs d'origine",
+        "À compresser les données",
+        "À protéger le fichier par mot de passe"
+      ],
       "answer": "À préserver les permissions et attributs d'origine",
-      "explanation": "C'est essentiel pour maintenir l'intégrité des droits lors d'une sauvegarde[cite: 310, 1046]."
+      "explanation": "C'est essentiel pour maintenir l'intégrité des droits lors d'une sauvegarde[cite: 310, 1046].",
+      "wrong_answers": {
+        "À afficher la progression": "Afficher la progression se fait avec -v (verbose) pour tar, ou --progress pour cp.",
+        "À compresser les données": "La compression dans tar se fait avec -z (gzip) ou -j (bzip2), pas -p.",
+        "À protéger le fichier par mot de passe": "Ni tar ni cp ne proposent de protection par mot de passe via -p. Pour chiffrer, on utilise gpg ou openssl."
+      }
     },
     {
       "id": 49,
       "theme": "Réseau",
       "question": "Quelle commande permet de tester la connectivité réseau vers un serveur distant ?",
-      "options": ["tracepath", "ping", "connect", "net-check"],
+      "options": [
+        "tracepath",
+        "ping",
+        "connect",
+        "net-check"
+      ],
       "answer": "ping",
-      "explanation": "Ping utilise le protocole ICMP pour vérifier si une machine répond[cite: 175, 177]."
+      "explanation": "Ping utilise le protocole ICMP pour vérifier si une machine répond[cite: 175, 177].",
+      "wrong_answers": {
+        "tracepath": "Piège : tracepath/traceroute affiche le chemin réseau (les routeurs traversés), mais ne teste pas simplement si la machine répond.",
+        "connect": "Cette commande n'est pas un outil réseau standard sous Linux.",
+        "net-check": "Cette commande n'existe pas sous Linux."
+      }
     },
     {
       "id": 50,
       "theme": "Gestion des Paquets",
       "question": "Comment lister tous les fichiers installés par un paquet spécifique sur Debian ?",
-      "options": ["apt list", "dpkg -L nom_du_paquet", "apt-get show", "ls /usr/bin"],
+      "options": [
+        "apt list",
+        "dpkg -L nom_du_paquet",
+        "apt-get show",
+        "ls /usr/bin"
+      ],
       "answer": "dpkg -L nom_du_paquet",
-      "explanation": "dpkg gère les opérations de bas niveau sur les fichiers des paquets[cite: 102, 960]."
+      "explanation": "dpkg gère les opérations de bas niveau sur les fichiers des paquets[cite: 102, 960].",
+      "wrong_answers": {
+        "apt list": "apt list affiche les paquets disponibles ou installés, mais pas les fichiers d'un paquet spécifique.",
+        "apt-get show": "La commande correcte serait 'apt show' ou 'apt-cache show', et elle affiche les métadonnées du paquet, pas ses fichiers.",
+        "ls /usr/bin": "Piège : cela listerait tous les binaires dans /usr/bin, pas seulement ceux d'un paquet précis."
+      }
     },
     {
       "id": 51,
       "theme": "Gestion du Stockage",
       "question": "Comment créer un Volume Group nommé 'data_vg' à partir du disque '/dev/sdb1' ?",
-      "options": ["vgcreate data_vg /dev/sdb1", "pvcreate /dev/sdb1 data_vg", "lvcreate -n data_vg", "vgadd /dev/sdb1"],
+      "options": [
+        "vgcreate data_vg /dev/sdb1",
+        "pvcreate /dev/sdb1 data_vg",
+        "lvcreate -n data_vg",
+        "vgadd /dev/sdb1"
+      ],
       "answer": "vgcreate data_vg /dev/sdb1",
-      "explanation": "La syntaxe est 'vgcreate [nom] [PV]'[cite: 18, 807]."
+      "explanation": "La syntaxe est 'vgcreate [nom] [PV]'[cite: 18, 807].",
+      "wrong_answers": {
+        "pvcreate /dev/sdb1 data_vg": "Piège : pvcreate crée un Physical Volume, pas un Volume Group. Et il ne prend qu'un disque en argument.",
+        "lvcreate -n data_vg": "Piège : lvcreate crée un Logical Volume à l'intérieur d'un VG existant, pas un VG.",
+        "vgadd /dev/sdb1": "La commande 'vgadd' n'existe pas. Pour ajouter un PV à un VG existant, on utilise 'vgextend'."
+      }
     },
     {
       "id": 52,
       "theme": "Sécurité",
       "question": "Où se trouvent les fichiers de configuration de Fail2ban (jails) ?",
-      "options": ["/etc/fail2ban/jail.conf", "/var/lib/fail2ban", "/etc/ssh/fail2ban", "/usr/share/fail2ban"],
+      "options": [
+        "/etc/fail2ban/jail.conf",
+        "/var/lib/fail2ban",
+        "/etc/ssh/fail2ban",
+        "/usr/share/fail2ban"
+      ],
       "answer": "/etc/fail2ban/jail.conf",
-      "explanation": "Ce fichier définit les services à surveiller et les actions de bannissement[cite: 31, 989]."
+      "explanation": "Ce fichier définit les services à surveiller et les actions de bannissement[cite: 31, 989].",
+      "wrong_answers": {
+        "/var/lib/fail2ban": "/var/lib/fail2ban contient les données persistantes (base de données des bannissements), pas la configuration.",
+        "/etc/ssh/fail2ban": "Ce répertoire n'existe pas. La config SSH est dans /etc/ssh/ et celle de Fail2ban dans /etc/fail2ban/.",
+        "/usr/share/fail2ban": "/usr/share/fail2ban contient les fichiers partagés du programme (filtres, actions), pas la config personnalisable."
+      }
     },
     {
       "id": 53,
       "theme": "Scripting Bash",
       "question": "Dans une boucle 'for file in *', que représente '*' ?",
-      "options": ["Tous les fichiers du répertoire courant", "Seulement les fichiers cachés", "Uniquement les dossiers", "Une erreur de syntaxe"],
+      "options": [
+        "Tous les fichiers du répertoire courant",
+        "Seulement les fichiers cachés",
+        "Uniquement les dossiers",
+        "Une erreur de syntaxe"
+      ],
       "answer": "Tous les fichiers du répertoire courant",
-      "explanation": "L'astérisque est un caractère générique (wildcard) qui s'étend à tous les noms de fichiers[cite: 1016]."
+      "explanation": "L'astérisque est un caractère générique (wildcard) qui s'étend à tous les noms de fichiers[cite: 1016].",
+      "wrong_answers": {
+        "Seulement les fichiers cachés": "C'est l'inverse : * ne match PAS les fichiers cachés (commençant par un point). Pour ceux-là, il faut .* ou activer dotglob.",
+        "Uniquement les dossiers": "* ne fait pas de distinction entre fichiers et dossiers, il match les deux.",
+        "Une erreur de syntaxe": "C'est une syntaxe parfaitement valide utilisant le globbing du shell."
+      }
     },
     {
       "id": 54,
       "theme": "Maintenance",
       "question": "Quelle commande affiche la version du noyau Linux actuellement utilisé ?",
-      "options": ["kernel -v", "uname -r", "cat /etc/os-release", "ls /boot"],
+      "options": [
+        "kernel -v",
+        "uname -r",
+        "cat /etc/os-release",
+        "ls /boot"
+      ],
       "answer": "uname -r",
-      "explanation": "Uname (Unix Name) avec l'option -r (release) donne la version exacte[cite: 41, 761, 847]."
+      "explanation": "Uname (Unix Name) avec l'option -r (release) donne la version exacte[cite: 41, 761, 847].",
+      "wrong_answers": {
+        "kernel -v": "La commande 'kernel' n'existe pas sous Linux.",
+        "cat /etc/os-release": "Piège : /etc/os-release affiche les infos de la distribution (Ubuntu 22.04, etc.), pas la version du noyau.",
+        "ls /boot": "Piège : ls /boot montre les fichiers du noyau (vmlinuz, initramfs) mais pas directement la version active."
+      }
     },
     {
       "id": 55,
       "theme": "Permissions",
       "question": "Comment donner les droits d'exécution à tout le monde sur un script 'backup.sh' ?",
-      "options": ["chmod 644 backup.sh", "chmod +x backup.sh", "chown root backup.sh", "chmod 444 backup.sh"],
+      "options": [
+        "chmod 644 backup.sh",
+        "chmod +x backup.sh",
+        "chown root backup.sh",
+        "chmod 444 backup.sh"
+      ],
       "answer": "chmod +x backup.sh",
-      "explanation": "'+x' ajoute le droit d'exécution aux trois catégories d'utilisateurs[cite: 736, 762]."
+      "explanation": "'+x' ajoute le droit d'exécution aux trois catégories d'utilisateurs[cite: 736, 762].",
+      "wrong_answers": {
+        "chmod 644 backup.sh": "Piège : 644 donne rw-r--r-- (lecture/écriture proprio, lecture seule pour les autres). Pas de droit d'exécution.",
+        "chown root backup.sh": "chown change le propriétaire du fichier, pas les permissions d'exécution.",
+        "chmod 444 backup.sh": "444 donne r--r--r-- (lecture seule pour tous). Aucun droit d'exécution ni d'écriture."
+      }
     },
     {
       "id": 56,
       "theme": "Utilisateurs",
       "question": "Comment forcer un utilisateur à changer son mot de passe à la prochaine connexion ?",
-      "options": ["passwd -d utilisateur", "chage -d 0 utilisateur", "usermod -L utilisateur", "userdel -f utilisateur"],
+      "options": [
+        "passwd -d utilisateur",
+        "chage -d 0 utilisateur",
+        "usermod -L utilisateur",
+        "userdel -f utilisateur"
+      ],
       "answer": "chage -d 0 utilisateur",
-      "explanation": "Régler la date du dernier changement à 0 (1er janvier 1970) déclenche l'expiration immédiate[cite: 14]."
+      "explanation": "Régler la date du dernier changement à 0 (1er janvier 1970) déclenche l'expiration immédiate[cite: 14].",
+      "wrong_answers": {
+        "passwd -d utilisateur": "Piège : passwd -d supprime le mot de passe (l'utilisateur peut se connecter sans mot de passe). Ce n'est pas la même chose.",
+        "usermod -L utilisateur": "Piège : usermod -L verrouille le compte (bloque toute connexion), il ne force pas un changement de mot de passe.",
+        "userdel -f utilisateur": "Attention : userdel supprime complètement l'utilisateur ! -f force la suppression même s'il est connecté."
+      }
     },
     {
       "id": 57,
       "theme": "Installation Gentoo",
       "question": "Que signifie l'option '-avuDN' utilisée avec 'emerge' ?",
-      "options": ["Installer une interface graphique", "Mise à jour profonde du système en demandant confirmation", "Supprimer tous les paquets inutiles", "Vérifier l'intégrité du disque dur"],
+      "options": [
+        "Installer une interface graphique",
+        "Mise à jour profonde du système en demandant confirmation",
+        "Supprimer tous les paquets inutiles",
+        "Vérifier l'intégrité du disque dur"
+      ],
       "answer": "Mise à jour profonde du système en demandant confirmation",
-      "explanation": "C'est la commande standard pour maintenir Gentoo à jour (ask, verbose, update, deep, newuse)[cite: 338]."
+      "explanation": "C'est la commande standard pour maintenir Gentoo à jour (ask, verbose, update, deep, newuse)[cite: 338].",
+      "wrong_answers": {
+        "Installer une interface graphique": "Pour installer un bureau graphique, on ferait 'emerge kde-plasma/plasma-meta' ou similaire, pas -avuDN.",
+        "Supprimer tous les paquets inutiles": "Piège : pour nettoyer les paquets orphelins, c'est 'emerge --depclean', pas -avuDN.",
+        "Vérifier l'intégrité du disque dur": "La vérification disque se fait avec fsck, pas avec le gestionnaire de paquets."
+      }
     },
     {
       "id": 58,
       "theme": "Réseau",
       "question": "Quel outil permet de modifier les paramètres réseau de manière interactive sur les distributions type RedHat/CentOS ?",
-      "options": ["nmtui", "ifconfig", "ip link", "net-setup"],
+      "options": [
+        "nmtui",
+        "ifconfig",
+        "ip link",
+        "net-setup"
+      ],
       "answer": "nmtui",
-      "explanation": "NetworkManager Text User Interface est l'outil visuel en console."
+      "explanation": "NetworkManager Text User Interface est l'outil visuel en console.",
+      "wrong_answers": {
+        "ifconfig": "ifconfig est déprécié et ne propose pas d'interface interactive. Il configure en ligne de commande uniquement.",
+        "ip link": "Piège : 'ip link' gère les interfaces réseau en ligne de commande, pas via une interface interactive.",
+        "net-setup": "net-setup est un script spécifique au Live CD Gentoo, pas un outil de configuration permanent."
+      }
     },
     {
       "id": 59,
       "theme": "Gestion du Stockage",
       "question": "Comment créer un système de fichiers ext4 sur la partition '/dev/sdb1' ?",
-      "options": ["format /dev/sdb1", "mkfs.ext4 /dev/sdb1", "fdisk --type ext4", "mount -t ext4"],
+      "options": [
+        "format /dev/sdb1",
+        "mkfs.ext4 /dev/sdb1",
+        "fdisk --type ext4",
+        "mount -t ext4"
+      ],
       "answer": "mkfs.ext4 /dev/sdb1",
-      "explanation": "La famille de commandes mkfs (Make File System) initialise les partitions[cite: 257, 775]."
+      "explanation": "La famille de commandes mkfs (Make File System) initialise les partitions[cite: 257, 775].",
+      "wrong_answers": {
+        "format /dev/sdb1": "'format' n'est pas une commande Linux (c'est une commande Windows/DOS).",
+        "fdisk --type ext4": "Piège : fdisk gère les partitions (créer, supprimer), il ne formate pas en système de fichiers.",
+        "mount -t ext4": "Piège : mount monte un système de fichiers déjà existant, il ne le crée pas."
+      }
     },
     {
       "id": 60,
       "theme": "Sauvegarde",
       "question": "Dans une crontab, que signifie le symbole '*' dans les champs de temps ?",
-      "options": ["Zéro", "Toutes les valeurs possibles (chaque minute, jour, etc.)", "Seulement le week-end", "Une valeur aléatoire"],
+      "options": [
+        "Zéro",
+        "Toutes les valeurs possibles (chaque minute, jour, etc.)",
+        "Seulement le week-end",
+        "Une valeur aléatoire"
+      ],
       "answer": "Toutes les valeurs possibles (chaque minute, jour, etc.)",
-      "explanation": "L'astérisque agit comme un joker temporel[cite: 26, 1058]."
+      "explanation": "L'astérisque agit comme un joker temporel[cite: 26, 1058].",
+      "wrong_answers": {
+        "Zéro": "* ne signifie pas 0. Il signifie 'toutes les valeurs possibles' pour ce champ.",
+        "Seulement le week-end": "Le week-end serait '0,6' ou '6,7' dans le 5e champ (jour de la semaine), pas *.",
+        "Une valeur aléatoire": "* est déterministe (chaque valeur possible), pas aléatoire."
+      }
     },
     {
       "id": 61,
       "theme": "Permissions",
       "question": "Quelle commande permet de trouver tous les fichiers appartenant à l'utilisateur 'tux' ?",
-      "options": ["ls -u tux", "find / -user tux", "grep tux /etc/passwd", "locate tux"],
+      "options": [
+        "ls -u tux",
+        "find / -user tux",
+        "grep tux /etc/passwd",
+        "locate tux"
+      ],
       "answer": "find / -user tux",
-      "explanation": "Find est l'outil le plus puissant pour filtrer par attributs de fichiers[cite: 749, 755]."
+      "explanation": "Find est l'outil le plus puissant pour filtrer par attributs de fichiers[cite: 749, 755].",
+      "wrong_answers": {
+        "ls -u tux": "ls -u trie par date d'accès, 'tux' serait interprété comme un nom de fichier, pas un filtre par utilisateur.",
+        "grep tux /etc/passwd": "Piège : cela montre si l'utilisateur 'tux' existe dans le système, mais ne liste pas ses fichiers.",
+        "locate tux": "Piège : locate cherche des fichiers dont le nom contient 'tux', pas ceux appartenant à l'utilisateur tux."
+      }
     },
     {
       "id": 62,
       "theme": "Arborescence",
       "question": "Où sont montés traditionnellement les périphériques amovibles (clés USB, CD) ?",
-      "options": ["/mnt ou /media", "/dev", "/root", "/proc"],
+      "options": [
+        "/mnt ou /media",
+        "/dev",
+        "/root",
+        "/proc"
+      ],
       "answer": "/mnt ou /media",
-      "explanation": "Ces répertoires servent de points de montage temporaires ou externes[cite: 261, 776]."
+      "explanation": "Ces répertoires servent de points de montage temporaires ou externes[cite: 261, 776].",
+      "wrong_answers": {
+        "/dev": "Piège : /dev contient les fichiers de périphériques (device files), pas les points de montage.",
+        "/root": "/root est le répertoire personnel du super-utilisateur, pas un point de montage pour périphériques.",
+        "/proc": "/proc est un système de fichiers virtuel qui expose les infos du noyau et des processus."
+      }
     },
     {
       "id": 63,
       "theme": "Sécurité",
       "question": "Quelle commande permet de voir les IP actuellement bannies par Fail2ban pour le service SSH ?",
-      "options": ["fail2ban-client status sshd", "iptables -L", "cat /var/log/fail2ban.log", "ufw status"],
+      "options": [
+        "fail2ban-client status sshd",
+        "iptables -L",
+        "cat /var/log/fail2ban.log",
+        "ufw status"
+      ],
       "answer": "fail2ban-client status sshd",
-      "explanation": "Le client fail2ban permet d'interroger l'état des 'jails'[cite: 33, 991]."
+      "explanation": "Le client fail2ban permet d'interroger l'état des 'jails'[cite: 33, 991].",
+      "wrong_answers": {
+        "iptables -L": "Piège : iptables -L affiche toutes les règles du firewall, y compris les bans Fail2ban, mais de façon brute et peu lisible.",
+        "cat /var/log/fail2ban.log": "Piège : le log contient l'historique complet (bans et unbans), mais pas un résumé clair des IP actuellement bannies.",
+        "ufw status": "ufw status affiche les règles UFW, pas les bannissements Fail2ban. Ce sont deux outils différents."
+      }
     },
     {
       "id": 64,
       "theme": "Scripting Bash",
       "question": "Comment exécuter un script Bash 'test.sh' même s'il n'a pas les droits d'exécution ?",
-      "options": ["run test.sh", "./test.sh", "bash test.sh", "exec test.sh"],
+      "options": [
+        "run test.sh",
+        "./test.sh",
+        "bash test.sh",
+        "exec test.sh"
+      ],
       "answer": "bash test.sh",
-      "explanation": "En passant le fichier en argument à l'interpréteur bash, le bit d'exécution n'est pas requis."
+      "explanation": "En passant le fichier en argument à l'interpréteur bash, le bit d'exécution n'est pas requis.",
+      "wrong_answers": {
+        "run test.sh": "'run' n'est pas une commande standard du shell Linux.",
+        "./test.sh": "Piège : cette syntaxe nécessite le droit d'exécution (+x) sur le fichier. Sans ce droit, le système refuse.",
+        "exec test.sh": "Piège : exec remplace le shell courant par la commande. De plus, il nécessite aussi le droit d'exécution."
+      }
     },
     {
       "id": 65,
       "theme": "Maintenance",
       "question": "Que signifie un 'Load Average' élevé dans la commande 'top' ?",
-      "options": ["Le disque dur est plein", "Le système est surchargé (processus en attente de CPU)", "La connexion internet est lente", "Le ventilateur tourne trop vite"],
+      "options": [
+        "Le disque dur est plein",
+        "Le système est surchargé (processus en attente de CPU)",
+        "La connexion internet est lente",
+        "Le ventilateur tourne trop vite"
+      ],
       "answer": "Le système est surchargé (processus en attente de CPU)",
-      "explanation": "Le Load Average mesure la file d'attente des processus pour les ressources système[cite: 42, 979]."
+      "explanation": "Le Load Average mesure la file d'attente des processus pour les ressources système[cite: 42, 979].",
+      "wrong_answers": {
+        "Le disque dur est plein": "L'espace disque se vérifie avec df -h. Le Load Average concerne les processus, pas le stockage.",
+        "La connexion internet est lente": "La bande passante réseau n'est pas mesurée par le Load Average.",
+        "Le ventilateur tourne trop vite": "Le ventilateur est lié à la température, pas au Load Average. Sans rapport."
+      }
     },
     {
       "id": 66,
       "theme": "Gestion du Stockage",
       "question": "Quelle commande permet de démonter proprement la partition située sur '/mnt/data' ?",
-      "options": ["rmount /mnt/data", "umount /mnt/data", "delete mount /mnt/data", "eject /mnt/data"],
+      "options": [
+        "rmount /mnt/data",
+        "umount /mnt/data",
+        "delete mount /mnt/data",
+        "eject /mnt/data"
+      ],
       "answer": "umount /mnt/data",
-      "explanation": "Attention à l'orthographe : 'umount' (sans le 'n' de unmount)[cite: 663]."
+      "explanation": "Attention à l'orthographe : 'umount' (sans le 'n' de unmount)[cite: 663].",
+      "wrong_answers": {
+        "rmount /mnt/data": "La commande 'rmount' n'existe pas sous Linux.",
+        "delete mount /mnt/data": "Cette syntaxe n'existe pas. 'delete' n'est pas une commande standard.",
+        "eject /mnt/data": "Piège : eject est utilisé pour éjecter un CD/DVD physiquement, pas pour démonter une partition."
+      }
     },
     {
       "id": 67,
       "theme": "Installation Gentoo",
       "question": "Quel fichier contient la liste des partitions à monter au démarrage de Gentoo ?",
-      "options": ["/etc/fstab", "/boot/grub/grub.cfg", "/etc/conf.d/net", "/etc/mtab"],
+      "options": [
+        "/etc/fstab",
+        "/boot/grub/grub.cfg",
+        "/etc/conf.d/net",
+        "/etc/mtab"
+      ],
       "answer": "/etc/fstab",
-      "explanation": "Comme sur la plupart des distributions, fstab gère la table des partitions[cite: 481, 795]."
+      "explanation": "Comme sur la plupart des distributions, fstab gère la table des partitions[cite: 481, 795].",
+      "wrong_answers": {
+        "/boot/grub/grub.cfg": "Piège : grub.cfg configure le bootloader (menu de démarrage), pas les partitions à monter.",
+        "/etc/conf.d/net": "/etc/conf.d/net configure les interfaces réseau sur OpenRC, pas les partitions.",
+        "/etc/mtab": "Piège : /etc/mtab (ou /proc/mounts) liste les partitions actuellement montées, mais ne configure pas le montage au démarrage."
+      }
     },
     {
       "id": 68,
       "theme": "Réseau",
       "question": "Comment obtenir une adresse IP automatiquement via le protocole DHCP ?",
-      "options": ["ip set dhcp", "dhcpcd enp0s3", "ifconfig dhcp on", "net-start"],
+      "options": [
+        "ip set dhcp",
+        "dhcpcd enp0s3",
+        "ifconfig dhcp on",
+        "net-start"
+      ],
       "answer": "dhcpcd enp0s3",
-      "explanation": "dhcpcd est le client démon qui demande l'adresse au routeur[cite: 186, 572]."
+      "explanation": "dhcpcd est le client démon qui demande l'adresse au routeur[cite: 186, 572].",
+      "wrong_answers": {
+        "ip set dhcp": "'ip set dhcp' n'est pas une syntaxe valide de la commande ip.",
+        "ifconfig dhcp on": "ifconfig n'a pas d'option 'dhcp on'. ifconfig est d'ailleurs déprécié.",
+        "net-start": "Cette commande n'existe pas sous Linux."
+      }
     },
     {
       "id": 69,
       "theme": "Permissions",
       "question": "Que fait la commande 'chmod 1777 /tmp' (le 1 au début) ?",
-      "options": ["Elle interdit l'accès à root", "Elle active le 'Sticky Bit' (seul le proprio peut supprimer son fichier)", "Elle rend le dossier invisible", "Elle compresse le dossier"],
+      "options": [
+        "Elle interdit l'accès à root",
+        "Elle active le 'Sticky Bit' (seul le proprio peut supprimer son fichier)",
+        "Elle rend le dossier invisible",
+        "Elle compresse le dossier"
+      ],
       "answer": "Elle active le 'Sticky Bit' (seul le proprio peut supprimer son fichier)",
-      "explanation": "C'est une sécurité essentielle pour les dossiers partagés comme /tmp[cite: 739]."
+      "explanation": "C'est une sécurité essentielle pour les dossiers partagés comme /tmp[cite: 739].",
+      "wrong_answers": {
+        "Elle interdit l'accès à root": "Root a toujours accès à tout, le sticky bit ne peut pas le restreindre.",
+        "Elle rend le dossier invisible": "Pour rendre un dossier caché sous Linux, on le préfixe d'un point. chmod ne change que les permissions.",
+        "Elle compresse le dossier": "chmod gère les permissions, pas la compression. Pour compresser, on utilise tar, gzip, etc."
+      }
     },
     {
       "id": 70,
       "theme": "Utilisateurs",
       "question": "Comment supprimer un utilisateur et son répertoire personnel simultanément ?",
-      "options": ["userdel utilisateur", "userdel -r utilisateur", "rmuser -all utilisateur", "deluser --home utilisateur"],
+      "options": [
+        "userdel utilisateur",
+        "userdel -r utilisateur",
+        "rmuser -all utilisateur",
+        "deluser --home utilisateur"
+      ],
       "answer": "userdel -r utilisateur",
-      "explanation": "L'option -r (recursive) supprime le dossier /home de l'utilisateur[cite: 880]."
+      "explanation": "L'option -r supprime également le répertoire personnel (/home) et la boîte mail de l'utilisateur[cite: 880].",
+      "wrong_answers": {
+        "userdel utilisateur": "Piège : sans -r, userdel supprime le compte mais laisse le répertoire /home intact. Les fichiers restent orphelins.",
+        "rmuser -all utilisateur": "La commande 'rmuser' n'existe pas sous Linux (elle existe sous FreeBSD).",
+        "deluser --home utilisateur": "Piège : deluser est un wrapper Debian. --home existe mais la question porte sur la commande bas niveau userdel."
+      }
     },
     {
       "id": 71,
       "theme": "Sauvegarde",
       "question": "Quelle commande permet d'extraire une archive 'backup.tar.gz' ?",
-      "options": ["tar -cvf backup.tar.gz", "tar -xzvf backup.tar.gz", "unzip backup.tar.gz", "extract backup.tar.gz"],
+      "options": [
+        "tar -cvf backup.tar.gz",
+        "tar -xzvf backup.tar.gz",
+        "unzip backup.tar.gz",
+        "extract backup.tar.gz"
+      ],
       "answer": "tar -xzvf backup.tar.gz",
-      "explanation": "-x pour extract, -z pour gzip[cite: 1054, 1062]."
+      "explanation": "-x pour extract, -z pour gzip[cite: 1054, 1062].",
+      "wrong_answers": {
+        "tar -cvf backup.tar.gz": "Piège : -c crée une archive mais sans -z, elle ne sera pas décompressée. De plus, -c est l'inverse de -x (extract).",
+        "unzip backup.tar.gz": "Piège : unzip est pour les fichiers .zip, pas pour les archives .tar.gz.",
+        "extract backup.tar.gz": "La commande 'extract' n'existe pas en standard sous Linux."
+      }
     },
     {
       "id": 72,
       "theme": "Sécurité",
       "question": "Que fait la commande 'ufw default deny incoming' ?",
-      "options": ["Elle autorise tout par défaut", "Elle bloque toutes les connexions entrantes non explicitement autorisées", "Elle éteint le firewall", "Elle déconnecte internet"],
+      "options": [
+        "Elle autorise tout par défaut",
+        "Elle bloque toutes les connexions entrantes non explicitement autorisées",
+        "Elle éteint le firewall",
+        "Elle déconnecte internet"
+      ],
       "answer": "Elle bloque toutes les connexions entrantes non explicitement autorisées",
-      "explanation": "C'est la base d'une politique de sécurité 'moindre privilège'[cite: 916]."
+      "explanation": "C'est la base d'une politique de sécurité 'moindre privilège'[cite: 916].",
+      "wrong_answers": {
+        "Elle autorise tout par défaut": "C'est l'inverse : 'deny' refuse les connexions, pas les autorise.",
+        "Elle éteint le firewall": "Pour désactiver UFW, la commande est 'ufw disable', pas 'default deny'.",
+        "Elle déconnecte internet": "Le firewall filtre les connexions mais ne coupe pas internet. Les connexions sortantes ne sont pas affectées par cette règle."
+      }
     },
     {
       "id": 73,
       "theme": "Installation Gentoo",
       "question": "Dans Gentoo, à quoi sert 'dispatch-conf' ?",
-      "options": ["À envoyer des emails", "À gérer les mises à jour des fichiers de configuration", "À compiler le noyau", "À installer GRUB"],
+      "options": [
+        "À envoyer des emails",
+        "À gérer les mises à jour des fichiers de configuration",
+        "À compiler le noyau",
+        "À installer GRUB"
+      ],
       "answer": "À gérer les mises à jour des fichiers de configuration",
-      "explanation": "Il permet de fusionner proprement les changements après une mise à jour de paquets."
+      "explanation": "Il permet de fusionner proprement les changements après une mise à jour de paquets.",
+      "wrong_answers": {
+        "À envoyer des emails": "dispatch-conf n'a aucun rapport avec les emails.",
+        "À compiler le noyau": "La compilation du noyau se fait avec make menuconfig/make, pas dispatch-conf.",
+        "À installer GRUB": "L'installation de GRUB se fait avec grub-install et grub-mkconfig, pas dispatch-conf."
+      }
     },
     {
       "id": 74,
       "theme": "Maintenance",
       "question": "Comment voir les 20 dernières lignes d'un fichier de log en continu ?",
-      "options": ["cat -n 20 /var/log/syslog", "tail -f -n 20 /var/log/syslog", "head -20 /var/log/syslog", "watch /var/log/syslog"],
+      "options": [
+        "cat -n 20 /var/log/syslog",
+        "tail -f -n 20 /var/log/syslog",
+        "head -20 /var/log/syslog",
+        "watch /var/log/syslog"
+      ],
       "answer": "tail -f -n 20 /var/log/syslog",
-      "explanation": "-f (follow) permet de voir les nouvelles lignes s'ajouter en direct[cite: 826]."
+      "explanation": "-f (follow) permet de voir les nouvelles lignes s'ajouter en direct[cite: 826].",
+      "wrong_answers": {
+        "cat -n 20 /var/log/syslog": "cat -n numérote les lignes mais affiche tout le fichier. L'option -n 20 n'est pas valide pour cat.",
+        "head -20 /var/log/syslog": "Piège : head affiche les premières lignes (pas les dernières), et ne suit pas le fichier en temps réel.",
+        "watch /var/log/syslog": "Piège : watch exécute une commande périodiquement, mais 'watch fichier' sans commande ne fonctionne pas correctement pour suivre un log."
+      }
     },
     {
       "id": 75,
       "theme": "Réseau",
       "question": "Quel fichier contient les adresses des serveurs DNS (résolution de noms) ?",
-      "options": ["/etc/hosts", "/etc/resolv.conf", "/etc/hostname", "/etc/networks"],
+      "options": [
+        "/etc/hosts",
+        "/etc/resolv.conf",
+        "/etc/hostname",
+        "/etc/networks"
+      ],
       "answer": "/etc/resolv.conf",
-      "explanation": "Ce fichier indique au système quel serveur interroger pour transformer un nom en IP[cite: 323, 324]."
+      "explanation": "Ce fichier indique au système quel serveur interroger pour transformer un nom en IP[cite: 323, 324].",
+      "wrong_answers": {
+        "/etc/hosts": "Piège : /etc/hosts fait de la résolution de noms locale (association nom → IP statique), pas via des serveurs DNS.",
+        "/etc/hostname": "Piège : /etc/hostname contient le nom de la machine, pas les serveurs DNS.",
+        "/etc/networks": "/etc/networks associe des noms à des réseaux, c'est rarement utilisé et ne contient pas les serveurs DNS."
+      }
     },
     {
       "id": 76,
       "theme": "Gestion du Stockage",
       "question": "Que signifie 'LVM' ?",
-      "options": ["Linux Virtual Machine", "Logical Volume Management", "Local Volume Monitor", "Lightweight Version Manager"],
+      "options": [
+        "Linux Virtual Machine",
+        "Logical Volume Management",
+        "Local Volume Monitor",
+        "Lightweight Version Manager"
+      ],
       "answer": "Logical Volume Management",
-      "explanation": "C'est la couche logicielle de gestion souple des disques[cite: 15, 802]."
+      "explanation": "C'est la couche logicielle de gestion souple des disques[cite: 15, 802].",
+      "wrong_answers": {
+        "Linux Virtual Machine": "LVM n'a rien à voir avec la virtualisation. Les machines virtuelles utilisent KVM, VirtualBox, etc.",
+        "Local Volume Monitor": "Cette définition n'existe pas.",
+        "Lightweight Version Manager": "Cette définition n'existe pas. Un gestionnaire de versions serait plutôt git ou nvm."
+      }
     },
     {
       "id": 77,
       "theme": "Scripting Bash",
       "question": "Comment concaténer le contenu de deux fichiers 'a.txt' et 'b.txt' dans un troisième 'c.txt' ?",
-      "options": ["cat a.txt b.txt > c.txt", "cp a.txt + b.txt c.txt", "merge a.txt b.txt c.txt", "cat c.txt < a.txt b.txt"],
+      "options": [
+        "cat a.txt b.txt > c.txt",
+        "cp a.txt + b.txt c.txt",
+        "merge a.txt b.txt c.txt",
+        "cat c.txt < a.txt b.txt"
+      ],
       "answer": "cat a.txt b.txt > c.txt",
-      "explanation": "Cat lit les fichiers bout à bout et la redirection '>' envoie le flux dans le fichier de destination."
+      "explanation": "Cat lit les fichiers bout à bout et la redirection '>' envoie le flux dans le fichier de destination.",
+      "wrong_answers": {
+        "cp a.txt + b.txt c.txt": "cp copie des fichiers mais ne concatène pas. Le '+' n'est pas un opérateur valide pour cp.",
+        "merge a.txt b.txt c.txt": "'merge' n'est pas une commande standard du shell (c'est un outil de fusion de diff pour RCS).",
+        "cat c.txt < a.txt b.txt": "La redirection '<' ne fonctionne qu'avec un seul fichier et enverrait a.txt en entrée standard, sans concaténer b.txt."
+      }
     },
     {
       "id": 78,
       "theme": "Arborescence",
       "question": "Où se trouve le répertoire personnel de l'utilisateur root ?",
-      "options": ["/home/root", "/root", "/bin/root", "/etc/root"],
+      "options": [
+        "/home/root",
+        "/root",
+        "/bin/root",
+        "/etc/root"
+      ],
       "answer": "/root",
-      "explanation": "Pour des raisons de sécurité et de montage, root a son propre dossier à la racine[cite: 158]."
+      "explanation": "Pour des raisons de sécurité et de montage, root a son propre dossier à la racine[cite: 158].",
+      "wrong_answers": {
+        "/home/root": "Piège : les utilisateurs normaux ont leur home dans /home/, mais root est spécial avec /root directement à la racine.",
+        "/bin/root": "/bin contient des binaires exécutables, pas des répertoires personnels.",
+        "/etc/root": "/etc contient des fichiers de configuration, pas des répertoires personnels."
+      }
     },
     {
       "id": 79,
       "theme": "Sécurité",
       "question": "Quelle commande permet de scanner les ports ouverts d'une machine distante ?",
-      "options": ["nmap", "ping", "ssh-scan", "netstat"],
+      "options": [
+        "nmap",
+        "ping",
+        "ssh-scan",
+        "netstat"
+      ],
       "answer": "nmap",
-      "explanation": "Nmap (Network Mapper) est l'outil de référence pour l'audit réseau."
+      "explanation": "Nmap (Network Mapper) est l'outil de référence pour l'audit réseau.",
+      "wrong_answers": {
+        "ping": "Piège : ping teste si une machine répond (ICMP echo), mais ne scanne pas les ports ouverts.",
+        "ssh-scan": "Cette commande n'existe pas en standard. Il existe ssh-audit pour auditer un serveur SSH.",
+        "netstat": "Piège : netstat affiche les connexions réseau de la machine locale, il ne scanne pas les ports d'une machine distante."
+      }
     },
     {
       "id": 80,
       "theme": "Gestion des Paquets",
       "question": "Sur Gentoo, comment chercher un paquet contenant le mot 'web' ?",
-      "options": ["apt search web", "emerge --search web", "pacman -Ss web", "find / -name web"],
+      "options": [
+        "apt search web",
+        "emerge --search web",
+        "pacman -Ss web",
+        "find / -name web"
+      ],
       "answer": "emerge --search web",
-      "explanation": "L'option --search (ou -s) interroge l'arbre Portage[cite: 570]."
+      "explanation": "L'option --search (ou -s) interroge l'arbre Portage[cite: 570].",
+      "wrong_answers": {
+        "apt search web": "apt est le gestionnaire de paquets Debian/Ubuntu, pas Gentoo.",
+        "pacman -Ss web": "pacman est le gestionnaire de paquets Arch Linux, pas Gentoo.",
+        "find / -name web": "find cherche des fichiers sur le disque local, il ne recherche pas dans les dépôts de paquets."
+      }
     },
     {
       "id": 81,
       "theme": "Maintenance",
       "question": "Comment vérifier l'utilisation de l'espace SWAP ?",
-      "options": ["df -h", "swapon --show", "free -m", "Les deux réponses B et C sont correctes"],
+      "options": [
+        "df -h",
+        "swapon --show",
+        "free -m",
+        "Les deux réponses B et C sont correctes"
+      ],
       "answer": "Les deux réponses B et C sont correctes",
-      "explanation": "Les deux commandes fournissent des informations sur l'état du swap[cite: 852]."
+      "explanation": "Les deux commandes fournissent des informations sur l'état du swap[cite: 852].",
+      "wrong_answers": {
+        "df -h": "Piège : df -h affiche l'espace disque des partitions, pas l'utilisation du swap.",
+        "swapon --show": "Cette commande affiche bien le swap, mais elle n est pas la seule : free -m le montre aussi. La réponse la plus complète est D.",
+        "free -m": "Cette commande affiche bien le swap (dernière ligne), mais swapon --show le fait aussi. La réponse la plus complète est D."
+      }
     },
     {
       "id": 82,
       "theme": "Installation Gentoo",
       "question": "À quoi sert la commande 'env-update && source /etc/profile' ?",
-      "options": ["À mettre à jour les variables d'environnement après un changement", "À redémarrer l'ordinateur", "À installer les pilotes graphiques", "À vider la corbeille"],
+      "options": [
+        "À mettre à jour les variables d'environnement après un changement",
+        "À redémarrer l'ordinateur",
+        "À installer les pilotes graphiques",
+        "À vider la corbeille"
+      ],
       "answer": "À mettre à jour les variables d'environnement après un changement",
-      "explanation": "C'est nécessaire pour que le shell prenne en compte les nouveaux réglages sans se reconnecter[cite: 331, 455]."
+      "explanation": "C'est nécessaire pour que le shell prenne en compte les nouveaux réglages sans se reconnecter[cite: 331, 455].",
+      "wrong_answers": {
+        "À redémarrer l'ordinateur": "Le redémarrage se fait avec 'reboot' ou 'shutdown -r now', pas env-update.",
+        "À installer les pilotes graphiques": "Les pilotes se gèrent via emerge (paquets) et la configuration du noyau, pas env-update.",
+        "À vider la corbeille": "Il n'y a pas de concept de corbeille en ligne de commande Linux standard."
+      }
     },
     {
       "id": 83,
       "theme": "Réseau",
       "question": "Quel protocole permet de transférer des fichiers de manière sécurisée via SSH ?",
-      "options": ["FTP", "HTTP", "SCP / SFTP", "Telnet"],
+      "options": [
+        "FTP",
+        "HTTP",
+        "SCP / SFTP",
+        "Telnet"
+      ],
       "answer": "SCP / SFTP",
-      "explanation": "Ces protocoles utilisent le tunnel chiffré de SSH pour le transfert[cite: 187, 867]."
+      "explanation": "Ces protocoles utilisent le tunnel chiffré de SSH pour le transfert[cite: 187, 867].",
+      "wrong_answers": {
+        "FTP": "Piège : FTP transfère les fichiers en clair (non chiffré). Les identifiants passent en clair sur le réseau.",
+        "HTTP": "HTTP est un protocole web, pas un protocole de transfert de fichiers sécurisé.",
+        "Telnet": "Piège : Telnet permet la connexion distante mais en clair (non chiffré). SSH l'a remplacé pour la sécurité."
+      }
     },
     {
       "id": 84,
       "theme": "Permissions",
       "question": "Comment réinitialiser les droits d'un dossier pour que seul le propriétaire puisse tout faire (rwx) ?",
-      "options": ["chmod 700 dossier", "chmod 777 dossier", "chmod 007 dossier", "chmod 755 dossier"],
+      "options": [
+        "chmod 700 dossier",
+        "chmod 777 dossier",
+        "chmod 007 dossier",
+        "chmod 755 dossier"
+      ],
       "answer": "chmod 700 dossier",
-      "explanation": "7 (rwx) pour user, 0 (---) pour group, 0 (---) pour others[cite: 741, 894]."
+      "explanation": "7 (rwx) pour user, 0 (---) pour group, 0 (---) pour others[cite: 741, 894].",
+      "wrong_answers": {
+        "chmod 777 dossier": "Piège dangereux : 777 donne rwx à TOUT LE MONDE (proprio, groupe, autres). C'est un risque de sécurité majeur.",
+        "chmod 007 dossier": "007 donne tous les droits uniquement aux 'autres', et rien au propriétaire ni au groupe. C'est l'inverse de ce qu'on veut.",
+        "chmod 755 dossier": "Piège : 755 donne rwx au proprio mais aussi r-x au groupe et aux autres. On veut que seul le proprio ait accès."
+      }
     },
     {
       "id": 85,
       "theme": "Utilisateurs",
       "question": "Quelle commande permet de changer temporairement d'identité pour devenir root ?",
-      "options": ["sudo", "su -", "login root", "Les deux réponses A et B sont correctes"],
+      "options": [
+        "sudo",
+        "su -",
+        "login root",
+        "Les deux réponses A et B sont correctes"
+      ],
       "answer": "Les deux réponses A et B sont correctes",
-      "explanation": "Sudo exécute une commande, su - ouvre une session complète en tant que root[cite: 868]."
+      "explanation": "Sudo exécute une commande, su - ouvre une session complète en tant que root[cite: 868].",
+      "wrong_answers": {
+        "login root": "Piège : 'login' est utilisé à l'invite de connexion du système, pas depuis un shell déjà ouvert.",
+        "sudo": "sudo permet bien d exécuter une commande en tant que root, mais su - le fait aussi. La réponse la plus complète est D.",
+        "su -": "su - ouvre bien une session root complète, mais sudo le fait aussi (ponctuellement). La réponse la plus complète est D."
+      }
     },
     {
       "id": 86,
       "theme": "Sauvegarde",
       "question": "Quelle est la différence entre une sauvegarde complète et incrémentale ?",
-      "options": ["L'incrémentale ne sauvegarde que ce qui a changé depuis la dernière fois", "La complète est plus rapide", "L'incrémentale utilise plus de place", "Il n'y a pas de différence"],
+      "options": [
+        "L'incrémentale ne sauvegarde que ce qui a changé depuis la dernière fois",
+        "La complète est plus rapide",
+        "L'incrémentale utilise plus de place",
+        "Il n'y a pas de différence"
+      ],
       "answer": "L'incrémentale ne sauvegarde que ce qui a changé depuis la dernière fois",
-      "explanation": "Cela permet de gagner du temps et de l'espace disque[cite: 24, 1048]."
+      "explanation": "Cela permet de gagner du temps et de l'espace disque[cite: 24, 1048].",
+      "wrong_answers": {
+        "La complète est plus rapide": "C'est l'inverse : la sauvegarde complète copie tout à chaque fois, elle est donc plus lente.",
+        "L'incrémentale utilise plus de place": "C'est l'inverse : l'incrémentale économise de l'espace en ne copiant que les changements.",
+        "Il n'y a pas de différence": "Il y a une différence majeure de temps et d'espace de stockage entre les deux approches."
+      }
     },
     {
       "id": 87,
       "theme": "Sécurité",
       "question": "Quelle commande permet de générer une paire de clés (publique/privée) pour SSH ?",
-      "options": ["ssh-keygen", "openssl gen", "crypt-setup", "ssh-add"],
+      "options": [
+        "ssh-keygen",
+        "openssl gen",
+        "crypt-setup",
+        "ssh-add"
+      ],
       "answer": "ssh-keygen",
-      "explanation": "C'est l'outil standard pour l'authentification par clé sans mot de passe[cite: 166, 188]."
+      "explanation": "C'est l'outil standard pour l'authentification par clé sans mot de passe[cite: 166, 188].",
+      "wrong_answers": {
+        "openssl gen": "Piège : openssl gère les certificats SSL/TLS et le chiffrement, pas les clés SSH.",
+        "crypt-setup": "Cette commande n'existe pas. cryptsetup (en un mot) sert au chiffrement de disques (LUKS), pas aux clés SSH.",
+        "ssh-add": "Piège : ssh-add ajoute une clé privée existante à l'agent SSH en mémoire, mais ne génère pas de nouvelles clés."
+      }
     },
     {
       "id": 88,
       "theme": "Installation Gentoo",
       "question": "Que signifie compiler un noyau 'minimaliste' ?",
-      "options": ["Il ne contient que les pilotes nécessaires au matériel spécifique de la machine", "C'est un noyau sans ligne de commande", "C'est un noyau pour les vieux ordinateurs uniquement", "Il est plus lent"],
+      "options": [
+        "Il ne contient que les pilotes nécessaires au matériel spécifique de la machine",
+        "C'est un noyau sans ligne de commande",
+        "C'est un noyau pour les vieux ordinateurs uniquement",
+        "Il est plus lent"
+      ],
       "answer": "Il ne contient que les pilotes nécessaires au matériel spécifique de la machine",
-      "explanation": "Cela optimise les performances et la sécurité en réduisant la surface d'attaque[cite: 531]."
+      "explanation": "Cela optimise les performances et la sécurité en réduisant la surface d'attaque[cite: 531].",
+      "wrong_answers": {
+        "C'est un noyau sans ligne de commande": "Le noyau et la ligne de commande (shell) sont indépendants. Un noyau minimaliste inclut toujours un accès console.",
+        "C'est un noyau pour les vieux ordinateurs uniquement": "Un noyau minimaliste est optimisé pour n'importe quel matériel spécifique, pas seulement les vieux PC.",
+        "Il est plus lent": "C'est l'inverse : un noyau minimaliste est généralement plus rapide car il ne charge que le nécessaire."
+      }
     },
     {
       "id": 89,
       "theme": "Maintenance",
       "question": "Comment savoir quels fichiers sont ouverts par un processus ou un utilisateur ?",
-      "options": ["ls", "lsof", "ps", "top"],
+      "options": [
+        "ls",
+        "lsof",
+        "ps",
+        "top"
+      ],
       "answer": "lsof",
-      "explanation": "lsof (LiSt Open Files) est extrêmement utile pour le débogage."
+      "explanation": "lsof (LiSt Open Files) est extrêmement utile pour le débogage.",
+      "wrong_answers": {
+        "ls": "ls liste les fichiers d'un répertoire, il ne montre pas quels fichiers sont ouverts par les processus.",
+        "ps": "Piège : ps affiche les processus en cours, mais pas les fichiers qu'ils ont ouverts.",
+        "top": "Piège : top affiche la consommation CPU/RAM des processus, mais pas les fichiers ouverts."
+      }
     },
     {
       "id": 90,
       "theme": "Gestion des Paquets",
       "question": "Sur Gentoo, comment supprimer les paquets orphelins (dépendances inutiles) ?",
-      "options": ["emerge --depclean", "apt autoremove", "emerge --clean", "rm -rf /usr/portage"],
+      "options": [
+        "emerge --depclean",
+        "apt autoremove",
+        "emerge --clean",
+        "rm -rf /usr/portage"
+      ],
       "answer": "emerge --depclean",
-      "explanation": "Cette commande nettoie le système des paquets qui ne sont plus requis[cite: 659]."
+      "explanation": "Cette commande nettoie le système des paquets qui ne sont plus requis[cite: 659].",
+      "wrong_answers": {
+        "apt autoremove": "Piège : apt autoremove est l'équivalent sur Debian/Ubuntu, pas sur Gentoo.",
+        "emerge --clean": "Piège : --clean est déprécié en faveur de --depclean. Il était moins sûr dans ses suppressions.",
+        "rm -rf /usr/portage": "Dangereux ! Cela supprimerait l'arbre Portage entier (tous les ebuilds), pas les paquets orphelins."
+      }
     },
     {
       "id": 91,
       "theme": "Réseau",
       "question": "Quelle commande permet de voir les connexions réseau actives et les ports en écoute ?",
-      "options": ["netstat -tulpn", "ss -tulpn", "ifconfig", "Les deux réponses A et B sont correctes"],
+      "options": [
+        "netstat -tulpn",
+        "ss -tulpn",
+        "ifconfig",
+        "Les deux réponses A et B sont correctes"
+      ],
       "answer": "Les deux réponses A et B sont correctes",
-      "explanation": "Ss est le remplaçant moderne de netstat."
+      "explanation": "Ss est le remplaçant moderne de netstat.",
+      "wrong_answers": {
+        "ifconfig": "Piège : ifconfig affiche la configuration des interfaces réseau, pas les connexions actives ni les ports en écoute.",
+        "netstat -tulpn": "netstat -tulpn fonctionne bien, mais ss -tulpn aussi (et le remplace). La réponse la plus complète est D.",
+        "ss -tulpn": "ss -tulpn fonctionne bien (remplaçant moderne de netstat), mais netstat aussi. La réponse la plus complète est D."
+      }
     },
     {
       "id": 92,
       "theme": "Scripting Bash",
       "question": "Que fait la commande 'sleep 60' dans un script ?",
-      "options": ["Elle éteint l'ordinateur après 60 secondes", "Elle met le script en pause pendant 60 secondes", "Elle limite la vitesse du CPU à 60%", "Elle compte jusqu'à 60"],
+      "options": [
+        "Elle éteint l'ordinateur après 60 secondes",
+        "Elle met le script en pause pendant 60 secondes",
+        "Elle limite la vitesse du CPU à 60%",
+        "Elle compte jusqu'à 60"
+      ],
       "answer": "Elle met le script en pause pendant 60 secondes",
-      "explanation": "Utile pour attendre la fin d'un processus ou espacer des vérifications."
+      "explanation": "Utile pour attendre la fin d'un processus ou espacer des vérifications.",
+      "wrong_answers": {
+        "Elle éteint l'ordinateur après 60 secondes": "L'extinction se fait avec 'shutdown +1' (1 minute) ou 'poweroff', pas 'sleep'.",
+        "Elle limite la vitesse du CPU à 60%": "La gestion CPU se fait via cpufreq ou les governors, pas avec sleep.",
+        "Elle compte jusqu'à 60": "sleep ne fait aucun affichage, il met simplement le script en attente silencieuse."
+      }
     },
     {
       "id": 93,
       "theme": "Permissions",
       "question": "Quelle est la commande pour changer les droits d'un fichier en utilisant la méthode symbolique pour ajouter le droit d'écriture au groupe ?",
-      "options": ["chmod g+w fichier", "chmod group=write fichier", "chmod 777 fichier", "chmod u+w fichier"],
+      "options": [
+        "chmod g+w fichier",
+        "chmod group=write fichier",
+        "chmod 777 fichier",
+        "chmod u+w fichier"
+      ],
       "answer": "chmod g+w fichier",
-      "explanation": "g (group), + (ajouter), w (write)[cite: 736]."
+      "explanation": "g (group), + (ajouter), w (write)[cite: 736].",
+      "wrong_answers": {
+        "chmod group=write fichier": "Cette syntaxe n'est pas valide. La méthode symbolique utilise des lettres courtes : g+w, u-r, o=rx, etc.",
+        "chmod 777 fichier": "Piège : 777 change TOUS les droits pour TOUT LE MONDE, ce n'est pas ciblé sur le groupe.",
+        "chmod u+w fichier": "Piège : u+w ajoute l'écriture au propriétaire (user), pas au groupe. Il faut g+w pour le groupe."
+      }
     },
     {
       "id": 94,
       "theme": "Arborescence",
       "question": "Dans quel répertoire se trouvent les exécutables de base du système ?",
-      "options": ["/usr/bin ou /bin", "/etc", "/var/bin", "/tmp"],
+      "options": [
+        "/usr/bin ou /bin",
+        "/etc",
+        "/var/bin",
+        "/tmp"
+      ],
       "answer": "/usr/bin ou /bin",
-      "explanation": "C'est là que sont stockées les commandes comme ls, cp, etc[cite: 329, 641]."
+      "explanation": "C'est là que sont stockées les commandes comme ls, cp, etc[cite: 329, 641].",
+      "wrong_answers": {
+        "/etc": "Piège : /etc contient les fichiers de configuration, pas les exécutables.",
+        "/var/bin": "Ce répertoire n'existe pas dans la hiérarchie standard Linux.",
+        "/tmp": "/tmp est un répertoire pour les fichiers temporaires, pas pour les exécutables."
+      }
     },
     {
       "id": 95,
       "theme": "Sécurité",
       "question": "Que contient le fichier '/var/log/auth.log' ?",
-      "options": ["Les messages de démarrage du noyau", "Les tentatives de connexion et l'utilisation de sudo", "Les erreurs du serveur web", "La liste des fichiers supprimés"],
+      "options": [
+        "Les messages de démarrage du noyau",
+        "Les tentatives de connexion et l'utilisation de sudo",
+        "Les erreurs du serveur web",
+        "La liste des fichiers supprimés"
+      ],
       "answer": "Les tentatives de connexion et l'utilisation de sudo",
-      "explanation": "C'est le fichier clé pour surveiller les intrusions[cite: 970, 974]."
+      "explanation": "C'est le fichier clé pour surveiller les intrusions[cite: 970, 974].",
+      "wrong_answers": {
+        "Les messages de démarrage du noyau": "Piège : les messages du noyau sont dans /var/log/kern.log ou accessibles via dmesg.",
+        "Les erreurs du serveur web": "Les logs du serveur web sont typiquement dans /var/log/apache2/ ou /var/log/nginx/.",
+        "La liste des fichiers supprimés": "Linux ne maintient pas de journal des fichiers supprimés par défaut."
+      }
     },
     {
       "id": 96,
       "theme": "Installation Gentoo",
       "question": "Comment configurer la disposition du clavier en 'fr' sur Gentoo console ?",
-      "options": ["En éditant /etc/conf.d/keymaps", "En tapant 'setxkbmap fr'", "Dans le BIOS", "C'est automatique"],
+      "options": [
+        "En éditant /etc/conf.d/keymaps",
+        "En tapant 'setxkbmap fr'",
+        "Dans le BIOS",
+        "C'est automatique"
+      ],
       "answer": "En éditant /etc/conf.d/keymaps",
-      "explanation": "On y modifie la variable keymap='fr'[cite: 424, 431]."
+      "explanation": "On y modifie la variable keymap='fr'[cite: 424, 431].",
+      "wrong_answers": {
+        "En tapant 'setxkbmap fr'": "Piège : setxkbmap configure le clavier pour l'environnement graphique (X11), pas la console TTY.",
+        "Dans le BIOS": "Le BIOS ne gère pas la disposition clavier du système d'exploitation.",
+        "C'est automatique": "La disposition clavier doit être configurée manuellement sur Gentoo, rien n'est automatique."
+      }
     },
     {
       "id": 97,
       "theme": "Sauvegarde",
       "question": "À quoi sert l'option '-n' dans la commande 'cron' ?",
-      "options": ["Elle n'existe pas, cron se configure via crontab -e", "À créer une nouvelle tâche", "À supprimer une tâche", "À nommer le script"],
+      "options": [
+        "Elle n'existe pas, cron se configure via crontab -e",
+        "À créer une nouvelle tâche",
+        "À supprimer une tâche",
+        "À nommer le script"
+      ],
       "answer": "Elle n'existe pas, cron se configure via crontab -e",
-      "explanation": "L'édition de la table se fait toujours via l'outil crontab[cite: 26, 1058]."
+      "explanation": "L'édition de la table se fait toujours via l'outil crontab[cite: 26, 1058].",
+      "wrong_answers": {
+        "À créer une nouvelle tâche": "Les tâches cron se créent/éditent via 'crontab -e', pas avec une option -n.",
+        "À supprimer une tâche": "Pour supprimer toutes les tâches cron, c'est 'crontab -r'. Pour en supprimer une, on édite avec -e.",
+        "À nommer le script": "crontab ne gère pas de noms pour les tâches. Chaque ligne est une entrée indépendante."
+      }
     },
     {
       "id": 98,
       "theme": "Utilisateurs",
       "question": "Quel est l'ID (UID) par défaut de l'utilisateur root ?",
-      "options": ["1000", "0", "1", "999"],
+      "options": [
+        "1000",
+        "0",
+        "1",
+        "999"
+      ],
       "answer": "0",
-      "explanation": "L'UID 0 est réservé au super-utilisateur[cite: 158]."
+      "explanation": "L'UID 0 est réservé au super-utilisateur[cite: 158].",
+      "wrong_answers": {
+        "1000": "Piège : 1000 est généralement l'UID du premier utilisateur normal créé sur le système.",
+        "1": "L'UID 1 est généralement attribué au daemon ou bin, pas à root.",
+        "999": "Les UID 100-999 sont souvent réservés aux comptes système (services, daemons)."
+      }
     },
     {
       "id": 99,
       "theme": "Gestion du Stockage",
       "question": "Quelle commande permet de vérifier l'intégrité d'un système de fichiers (check disk) ?",
-      "options": ["fsck", "chkdsk", "disk-verify", "inspect"],
+      "options": [
+        "fsck",
+        "chkdsk",
+        "disk-verify",
+        "inspect"
+      ],
       "answer": "fsck",
-      "explanation": "File System Consistency CheK est l'outil de réparation standard[cite: 19]."
+      "explanation": "File System Consistency Check est l'outil de réparation standard[cite: 19].",
+      "wrong_answers": {
+        "chkdsk": "Piège : chkdsk est l'équivalent sous Windows, pas Linux.",
+        "disk-verify": "Cette commande n'existe pas sous Linux.",
+        "inspect": "Cette commande n'existe pas sous Linux pour la vérification de disque."
+      }
     },
     {
       "id": 100,
       "theme": "Maintenance",
       "question": "Comment vider le cache de la mémoire vive sans redémarrer (astuce avancée) ?",
-      "options": ["echo 3 > /proc/sys/vm/drop_caches", "free --clear", "ram-reset", "kill -9 1"],
+      "options": [
+        "echo 3 > /proc/sys/vm/drop_caches",
+        "free --clear",
+        "ram-reset",
+        "kill -9 1"
+      ],
       "answer": "echo 3 > /proc/sys/vm/drop_caches",
-      "explanation": "Cette commande force le noyau à libérer les pages de cache non utilisées."
+      "explanation": "Cette commande force le noyau à libérer les pages de cache non utilisées.",
+      "wrong_answers": {
+        "free --clear": "L'option --clear n'existe pas pour la commande free. free est en lecture seule.",
+        "ram-reset": "Cette commande n'existe pas sous Linux.",
+        "kill -9 1": "Dangereux ! Cela tenterait de tuer le processus PID 1 (init/systemd), ce qui pourrait planter le système."
+      }
     }
   ]
 }
