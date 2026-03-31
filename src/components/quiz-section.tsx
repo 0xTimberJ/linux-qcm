@@ -17,7 +17,7 @@ type QuizQuestion = {
   options: string[]
   answer: string
   explanation: string
-  wrong_answers?: Record<string, string>
+  wrong_answers?: Partial<Record<string, string>>
 }
 
 type QuizDataset = {
