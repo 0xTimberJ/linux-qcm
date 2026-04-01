@@ -50,6 +50,7 @@ const quiz: Required<QuizDataset> = {
 }
 const QUESTIONS_PER_QUIZ = 10
 const PROGRESS_STORAGE_KEY = "linux-qcm-question-progress-v1"
+const BEST_CHRONO_STORAGE_KEY = "linux-qcm-best-chrono-v1"
 
 type QuestionStatus = "wrong" | "correct"
 
@@ -114,6 +115,21 @@ export function QuizSection() {
   const [quizStartAt, setQuizStartAt] = useState<number | null>(null)
   const [elapsedSeconds, setElapsedSeconds] = useState(0)
   const [finalElapsedSeconds, setFinalElapsedSeconds] = useState<number | null>(null)
+  const [bestChronoSeconds, setBestChronoSeconds] = useState<number | null>(() => {
+    if (typeof window === "undefined") {
+      return null
+    }
+
+    const raw = window.localStorage.getItem(BEST_CHRONO_STORAGE_KEY)
+    if (!raw) return null
+
+    const parsed = Number(raw)
+    if (!Number.isFinite(parsed) || parsed < 0) {
+      return null
+    }
+
+    return Math.floor(parsed)
+  })
   const [questionStatusMap, setQuestionStatusMap] = useState<Record<number, QuestionStatus>>(() => {
     if (typeof window === "undefined") {
       return {}
@@ -201,7 +217,14 @@ export function QuizSection() {
     if (!hasAnsweredCurrent) return
     if (currentIndex === total - 1) {
       if (isTimedMode && quizStartAt !== null) {
-        setFinalElapsedSeconds(Math.floor((Date.now() - quizStartAt) / 1000))
+        const elapsed = Math.floor((Date.now() - quizStartAt) / 1000)
+        setFinalElapsedSeconds(elapsed)
+
+        setBestChronoSeconds((previousBest) => {
+          const nextBest = previousBest === null ? elapsed : Math.min(previousBest, elapsed)
+          window.localStorage.setItem(BEST_CHRONO_STORAGE_KEY, String(nextBest))
+          return nextBest
+        })
       }
       setFinished(true)
       return
@@ -295,6 +318,11 @@ export function QuizSection() {
             <CardDescription className="text-base">
               QCM de {total} questions aléatoires (banque: {questionBankTotal}), 4 réponses par question.
             </CardDescription>
+            {bestChronoSeconds !== null && (
+              <p className="text-sm text-muted-foreground">
+                Meilleur chrono: <span className="font-semibold text-foreground">{formatDuration(bestChronoSeconds)}</span>
+              </p>
+            )}
           </CardHeader>
           <CardContent className="flex flex-col items-center gap-3 pb-8 sm:flex-row sm:justify-center">
             <Button size="lg" className="w-full max-w-xs" onClick={startQuiz}>
@@ -341,6 +369,12 @@ export function QuizSection() {
                 <div className="rounded-xl border bg-background p-4 text-center">
                   <p className="text-sm text-muted-foreground">Chrono</p>
                   <p className="text-2xl font-semibold">{formatDuration(finalElapsedSeconds)}</p>
+                </div>
+              )}
+              {bestChronoSeconds !== null && (
+                <div className="rounded-xl border bg-background p-4 text-center">
+                  <p className="text-sm text-muted-foreground">Meilleur chrono</p>
+                  <p className="text-2xl font-semibold">{formatDuration(bestChronoSeconds)}</p>
                 </div>
               )}
             </div>
