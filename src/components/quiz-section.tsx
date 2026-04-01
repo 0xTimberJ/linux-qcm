@@ -77,10 +77,14 @@ function isCodeLike(value: string) {
 
 function InlineValue({ value }: { value: string }) {
   if (!isCodeLike(value)) {
-    return <span>{value}</span>
+    return <span className="whitespace-normal wrap-break-word">{value}</span>
   }
 
-  return <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-[0.8rem]">{value}</code>
+  return (
+    <code className="max-w-full whitespace-pre-wrap break-all rounded bg-muted px-1.5 py-0.5 font-mono text-[0.8rem]">
+      {value}
+    </code>
+  )
 }
 
 export function QuizSection() {
@@ -294,10 +298,14 @@ export function QuizSection() {
 
             <Progress value={percent} className="h-2" />
 
-            <div className="flex justify-center">
+            <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Button onClick={restartQuiz} size="lg" className="w-full max-w-xs gap-2">
                 <RotateCcw className="size-4" />
                 Nouveau quiz aléatoire
+              </Button>
+              <Button onClick={startUnseenQuiz} size="lg" variant="outline" className="w-full max-w-xs gap-2">
+                <Sparkles className="size-4" />
+                Non faites ({unseenGlobalCount})
               </Button>
             </div>
           </CardContent>
@@ -496,7 +504,7 @@ export function QuizSection() {
               const isCorrect = currentCorrectIndex === index
 
               const buttonClass = cn(
-                "h-auto w-full justify-start gap-4 rounded-xl border px-4 py-4 text-left text-base sm:text-lg",
+                "h-auto w-full justify-start gap-4 rounded-xl border px-4 py-4 text-left text-base whitespace-normal wrap-break-word sm:text-lg",
                 !hasAnsweredCurrent && "hover:bg-muted",
                 hasAnsweredCurrent && isCorrect && "border-green-600 bg-green-500/10",
                 hasAnsweredCurrent && isSelected && !isCorrect && "border-red-600 bg-red-500/10",
