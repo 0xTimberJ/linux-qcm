@@ -204,6 +204,30 @@ export function QuizSection() {
     startQuizWithQuestions(source)
   }
 
+  const startRetryFailedQuiz = () => {
+    const failedQuestions = quiz.questions.filter(
+      (question) => questionStatusMap[question.id] === "wrong"
+    )
+
+    if (failedQuestions.length === 0) {
+      startQuiz()
+      return
+    }
+
+    if (failedQuestions.length >= QUESTIONS_PER_QUIZ) {
+      startQuizWithQuestions(failedQuestions)
+      return
+    }
+
+    const failedQuestionIds = new Set(failedQuestions.map((question) => question.id))
+    const extraQuestions = pickRandomQuestions(
+      quiz.questions.filter((question) => !failedQuestionIds.has(question.id)),
+      QUESTIONS_PER_QUIZ - failedQuestions.length
+    )
+
+    startQuizWithQuestions([...failedQuestions, ...extraQuestions])
+  }
+
   const restartQuiz = () => {
     startQuiz()
   }
@@ -213,6 +237,7 @@ export function QuizSection() {
     (status) => status === "correct"
   ).length
   const wrongGlobalCount = completedGlobalCount - correctGlobalCount
+  const failedGlobalCount = wrongGlobalCount
   const unseenGlobalCount = questionBankTotal - completedGlobalCount
   const selectedQuestion = selectedQuestionId
     ? quiz.questions.find((question) => question.id === selectedQuestionId) ?? null
@@ -427,6 +452,17 @@ export function QuizSection() {
                 >
                   <Sparkles className="size-3.5" />
                   Non faites ({unseenGlobalCount})
+                </Button>
+
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={startRetryFailedQuiz}
+                  className="h-7 gap-1 px-2"
+                  disabled={failedGlobalCount === 0}
+                >
+                  <RotateCcw className="size-3.5" />
+                  Retry fail ({failedGlobalCount})
                 </Button>
               </div>
               <CardTitle className="text-xl sm:text-2xl">Question {currentIndex + 1} / {total}</CardTitle>
