@@ -4,6 +4,7 @@ import {
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
+  Clock3,
   Grid3X3,
   RotateCcw,
   Sparkles,
@@ -64,6 +65,13 @@ function shuffleOptions(options: string[]) {
   return [...options].sort(() => Math.random() - 0.5)
 }
 
+function formatDuration(totalSeconds: number) {
+  const safeSeconds = Math.max(0, totalSeconds)
+  const minutes = Math.floor(safeSeconds / 60)
+  const seconds = safeSeconds % 60
+  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`
+}
+
 function isCodeLike(value: string) {
   return (
     /^\//.test(value.trim()) ||
@@ -102,6 +110,10 @@ export function QuizSection() {
   const [selectedQuestionId, setSelectedQuestionId] = useState<number | null>(null)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [answers, setAnswers] = useState<number[]>(() => Array(sessionQuestions.length).fill(-1))
+  const [isTimedMode, setIsTimedMode] = useState(false)
+  const [quizStartAt, setQuizStartAt] = useState<number | null>(null)
+  const [elapsedSeconds, setElapsedSeconds] = useState(0)
+  const [finalElapsedSeconds, setFinalElapsedSeconds] = useState<number | null>(null)
   const [questionStatusMap, setQuestionStatusMap] = useState<Record<number, QuestionStatus>>(() => {
     if (typeof window === "undefined") {
       return {}
@@ -151,6 +163,18 @@ export function QuizSection() {
     window.localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(questionStatusMap))
   }, [questionStatusMap])
 
+  useEffect(() => {
+    if (!started || finished || !isTimedMode || quizStartAt === null) {
+      return
+    }
+
+    const interval = window.setInterval(() => {
+      setElapsedSeconds(Math.floor((Date.now() - quizStartAt) / 1000))
+    }, 1000)
+
+    return () => window.clearInterval(interval)
+  }, [started, finished, isTimedMode, quizStartAt])
+
   const selectAnswer = (optionIndex: number) => {
     if (hasAnsweredCurrent) return
 
@@ -176,6 +200,9 @@ export function QuizSection() {
   const nextQuestion = () => {
     if (!hasAnsweredCurrent) return
     if (currentIndex === total - 1) {
+      if (isTimedMode && quizStartAt !== null) {
+        setFinalElapsedSeconds(Math.floor((Date.now() - quizStartAt) / 1000))
+      }
       setFinished(true)
       return
     }
@@ -186,12 +213,17 @@ export function QuizSection() {
     setCurrentIndex((value) => Math.max(0, value - 1))
   }
 
-  const startQuizWithQuestions = (questionPool: QuizQuestion[]) => {
+  const startQuizWithQuestions = (questionPool: QuizQuestion[], options?: { timed?: boolean }) => {
+    const timed = options?.timed ?? false
     const randomQuestions = pickRandomQuestions(questionPool, QUESTIONS_PER_QUIZ).map((question) => ({
       ...question,
       options: shuffleOptions(question.options),
     }))
     setSessionQuestions(randomQuestions)
+    setIsTimedMode(timed)
+    setQuizStartAt(timed ? Date.now() : null)
+    setElapsedSeconds(0)
+    setFinalElapsedSeconds(null)
     setStarted(true)
     setFinished(false)
     setCurrentIndex(0)
@@ -200,6 +232,10 @@ export function QuizSection() {
 
   const startQuiz = () => {
     startQuizWithQuestions(quiz.questions)
+  }
+
+  const startTimedQuiz = () => {
+    startQuizWithQuestions(quiz.questions, { timed: true })
   }
 
   const startUnseenQuiz = () => {
@@ -260,9 +296,13 @@ export function QuizSection() {
               QCM de {total} questions aléatoires (banque: {questionBankTotal}), 4 réponses par question.
             </CardDescription>
           </CardHeader>
-          <CardContent className="flex justify-center pb-8">
+          <CardContent className="flex flex-col items-center gap-3 pb-8 sm:flex-row sm:justify-center">
             <Button size="lg" className="w-full max-w-xs" onClick={startQuiz}>
               Start Quiz
+            </Button>
+            <Button size="lg" variant="outline" className="w-full max-w-xs gap-2" onClick={startTimedQuiz}>
+              <Clock3 className="size-4" />
+              Mode chrono
             </Button>
           </CardContent>
         </Card>
@@ -278,10 +318,13 @@ export function QuizSection() {
         <Card className="mx-auto w-full max-w-4xl">
           <CardHeader className="space-y-4 text-center">
             <CardTitle className="text-2xl sm:text-3xl">Quiz terminé</CardTitle>
-            <CardDescription className="text-base">Voici ton résultat final.</CardDescription>
+            <CardDescription className="text-base">
+              Voici ton résultat final.
+              {isTimedMode && finalElapsedSeconds !== null ? ` Temps: ${formatDuration(finalElapsedSeconds)}.` : ""}
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="grid gap-3 sm:grid-cols-3">
+            <div className={cn("grid gap-3", isTimedMode ? "sm:grid-cols-4" : "sm:grid-cols-3")}>
               <div className="rounded-xl border bg-background p-4 text-center">
                 <p className="text-sm text-muted-foreground">Bonnes réponses</p>
                 <p className="text-2xl font-semibold text-green-600">{score}</p>
@@ -294,6 +337,12 @@ export function QuizSection() {
                 <p className="text-sm text-muted-foreground">Score</p>
                 <p className="text-2xl font-semibold">{percent}%</p>
               </div>
+              {isTimedMode && finalElapsedSeconds !== null && (
+                <div className="rounded-xl border bg-background p-4 text-center">
+                  <p className="text-sm text-muted-foreground">Chrono</p>
+                  <p className="text-2xl font-semibold">{formatDuration(finalElapsedSeconds)}</p>
+                </div>
+              )}
             </div>
 
             <Progress value={percent} className="h-2" />
@@ -462,6 +511,11 @@ export function QuizSection() {
                   Non faites ({unseenGlobalCount})
                 </Button>
 
+                <Button variant="ghost" size="sm" onClick={startTimedQuiz} className="h-7 gap-1 px-2">
+                  <Clock3 className="size-3.5" />
+                  Chrono
+                </Button>
+
                 <Button
                   variant="ghost"
                   size="sm"
@@ -477,6 +531,12 @@ export function QuizSection() {
             </div>
 
             <div className="flex items-center gap-2">
+              {isTimedMode && (
+                <Badge variant="outline" className="h-6 rounded-md px-2 font-mono">
+                  <Clock3 className="size-3.5" />
+                  {formatDuration(elapsedSeconds)}
+                </Badge>
+              )}
               <Badge variant="destructive" className="h-6 rounded-md px-2">
                 <XCircle className="size-3.5" />
                 {wrongCount}
