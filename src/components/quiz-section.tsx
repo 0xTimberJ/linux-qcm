@@ -1,9 +1,16 @@
 "use client"
 
+import {
+  CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
+  Grid3X3,
+  RotateCcw,
+  Sparkles,
+  XCircle,
+} from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
-import { CheckCircle2, ChevronLeft, ChevronRight, Grid3X3, RotateCcw, XCircle } from "lucide-react"
 
-import questionsData from "@/data/questions.json"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -16,6 +23,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Progress } from "@/components/ui/progress"
+import questionsData from "@/data/questions.json"
 import { cn } from "@/lib/utils"
 
 type QuizQuestion = {
@@ -50,6 +58,10 @@ function pickRandomQuestions(questions: QuizQuestion[], limit: number) {
   const max = Math.min(limit, questions.length)
   const shuffled = [...questions].sort(() => Math.random() - 0.5)
   return shuffled.slice(0, max)
+}
+
+function shuffleOptions(options: string[]) {
+  return [...options].sort(() => Math.random() - 0.5)
 }
 
 function isCodeLike(value: string) {
@@ -170,13 +182,26 @@ export function QuizSection() {
     setCurrentIndex((value) => Math.max(0, value - 1))
   }
 
-  const startQuiz = () => {
-    const randomQuestions = pickRandomQuestions(quiz.questions, QUESTIONS_PER_QUIZ)
+  const startQuizWithQuestions = (questionPool: QuizQuestion[]) => {
+    const randomQuestions = pickRandomQuestions(questionPool, QUESTIONS_PER_QUIZ).map((question) => ({
+      ...question,
+      options: shuffleOptions(question.options),
+    }))
     setSessionQuestions(randomQuestions)
     setStarted(true)
     setFinished(false)
     setCurrentIndex(0)
     setAnswers(Array(randomQuestions.length).fill(-1))
+  }
+
+  const startQuiz = () => {
+    startQuizWithQuestions(quiz.questions)
+  }
+
+  const startUnseenQuiz = () => {
+    const unseenQuestions = quiz.questions.filter((question) => !questionStatusMap[question.id])
+    const source = unseenQuestions.length > 0 ? unseenQuestions : quiz.questions
+    startQuizWithQuestions(source)
   }
 
   const restartQuiz = () => {
@@ -188,6 +213,7 @@ export function QuizSection() {
     (status) => status === "correct"
   ).length
   const wrongGlobalCount = completedGlobalCount - correctGlobalCount
+  const unseenGlobalCount = questionBankTotal - completedGlobalCount
   const selectedQuestion = selectedQuestionId
     ? quiz.questions.find((question) => question.id === selectedQuestionId) ?? null
     : null
@@ -352,9 +378,9 @@ export function QuizSection() {
                               "rounded-lg border p-3",
                               !selectedQuestionStatus && "border-border bg-muted/30",
                               selectedQuestionStatus === "wrong" &&
-                                "border-red-500/40 bg-red-500/10",
+                              "border-red-500/40 bg-red-500/10",
                               selectedQuestionStatus === "correct" &&
-                                "border-green-500/40 bg-green-500/10"
+                              "border-green-500/40 bg-green-500/10"
                             )}
                           >
                             <p className="text-sm text-muted-foreground">Ton statut</p>
@@ -363,9 +389,9 @@ export function QuizSection() {
                                 "font-medium",
                                 !selectedQuestionStatus && "text-muted-foreground",
                                 selectedQuestionStatus === "wrong" &&
-                                  "text-red-700 dark:text-red-300",
+                                "text-red-700 dark:text-red-300",
                                 selectedQuestionStatus === "correct" &&
-                                  "text-green-700 dark:text-green-300"
+                                "text-green-700 dark:text-green-300"
                               )}
                             >
                               {!selectedQuestionStatus
@@ -392,6 +418,16 @@ export function QuizSection() {
                     )}
                   </DialogContent>
                 </Dialog>
+
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={startUnseenQuiz}
+                  className="h-7 gap-1 px-2"
+                >
+                  <Sparkles className="size-3.5" />
+                  Non faites ({unseenGlobalCount})
+                </Button>
               </div>
               <CardTitle className="text-xl sm:text-2xl">Question {currentIndex + 1} / {total}</CardTitle>
             </div>
